@@ -11,5 +11,6 @@ async function main() {
       console.error("Unable to connect to database");
     }
 }
+
   
 main();
