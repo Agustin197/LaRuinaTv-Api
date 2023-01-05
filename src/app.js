@@ -5,7 +5,7 @@ const passport = require('passport');
 const passportSetup = require('../passport')
 const server = express();
 
-const user = require('./routes/user.js');
+const routes = require('./routes/index.js');
 
 server.use((req, res, next)=>{
     const corsList = [
@@ -41,6 +41,6 @@ server.use(
 server.use(passport.initialize());
 server.use(morgan('dev'));
 server.use(express.json());
-server.use('/user', user);
+server.use('/', routes);
 
 module.exports = { server }
