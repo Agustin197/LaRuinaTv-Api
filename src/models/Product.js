@@ -2,11 +2,11 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require('../db.js');
 
 const Product = sequelize.define("product",{
-         id: {
+    id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-    },
+     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
