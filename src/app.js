@@ -4,7 +4,7 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const passportSetup = require('../passport')
 const server = express();
-
+//bUENAS NOCHES 
 const routes = require('./routes/index.js');
 
 server.use((req, res, next)=>{
