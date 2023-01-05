@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const server = express();
 
 const user = require('./routes/user.js');
-
+//test2
 server.use((req, res, next)=>{
     const corsList = [
         'http://localhost:3000',
