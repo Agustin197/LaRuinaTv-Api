@@ -57,4 +57,4 @@ server.use(morgan('dev'));
 server.use(express.json());
 server.use('/', routes);
 
-module.exports = { server }
+module.exports = server
