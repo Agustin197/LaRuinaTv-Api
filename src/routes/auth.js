@@ -4,6 +4,7 @@ const router = require('express').Router();
 const passport = require('passport');
 
 router.get("/login/success",(req,res)=>{
+    console.log(req)
     if(req.user) {
         res.status(200).json({
             error: false,
@@ -19,6 +20,7 @@ router.get("/login/success",(req,res)=>{
 })
 
 router.get("/login/failed",(req,res)=>{
+    console.log(req)
     res.status(401).json({
         error: true,
         message: "Log in failure"

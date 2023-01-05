@@ -5,14 +5,13 @@ const express = require('express');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const passportSetup = require('./passport');
-const authRoute = require('./routes/auth')
 const server = express();
 
 const routes = require('./routes/index.js');
 
 server.use(
     cookieSession({
-        name: "laruina",
+        name: "session",
         keys: ["asdasd"],
         maxAge: 24*60*60*100
     })
@@ -45,13 +44,14 @@ server.use((req, res, next)=>{
 server.use(passport.initialize());
 server.use(passport.session());
 
-server.use(
-    cors({
-        credentials: true
-    })
-)
+// server.use(
+//     cors({
+//         origin: "http://localhost:3000",
+//         methods: 'GET, POST, OPTIONS, PUT, DELETE',
+//         credentials: true
+//     })
+// ) SOLO TESTEO
 
-server.use("/auth", authRoute)
 
 server.use(morgan('dev'));
 server.use(express.json());
