@@ -1,8 +1,11 @@
+require("dotenv").config();
 const morgan = require('morgan');
+const cors = require('cors')
 const express = require('express');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
-const passportSetup = require('../passport')
+const passportSetup = require('./passport');
+const authRoute = require('./routes/auth')
 const server = express();
 
 const routes = require('./routes/index.js');
@@ -39,6 +42,16 @@ server.use(
     })
 );
 server.use(passport.initialize());
+server.use(passport.session());
+
+server.use(
+    cors({
+        credentials: true
+    })
+)
+
+server.use("/auth", authRoute)
+
 server.use(morgan('dev'));
 server.use(express.json());
 server.use('/', routes);
