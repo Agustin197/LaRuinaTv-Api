@@ -43,4 +43,4 @@ server.use(morgan('dev'));
 server.use(express.json());
 server.use('/user', user);
 
-server.listen(3001, () => console.log(`Server status: Online`))
+module.exports = { server }
