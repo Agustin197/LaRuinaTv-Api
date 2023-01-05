@@ -10,6 +10,14 @@ const server = express();
 
 const routes = require('./routes/index.js');
 
+server.use(
+    cookieSession({
+        name: "laruina",
+        keys: ["asdasd"],
+        maxAge: 24*60*60*100
+    })
+);
+
 server.use((req, res, next)=>{
     const corsList = [
         'http://localhost:3000',
@@ -34,13 +42,6 @@ server.use((req, res, next)=>{
     } //testing ruteos
 });
 
-server.use(
-    cookieSession({
-        name: "laruina",
-        keys: ["asdasd"],
-        maxAge: 24*60*60*100
-    })
-);
 server.use(passport.initialize());
 server.use(passport.session());
 
