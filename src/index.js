@@ -1,5 +1,8 @@
-const express = require('express');
 const morgan = require('morgan');
+const express = require('express');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const passportSetup = require('../passport')
 const server = express();
 
 const user = require('./routes/user.js');
@@ -28,8 +31,16 @@ server.use((req, res, next)=>{
     } //testing ruteos
 });
 
-server.use(morgan('dev'))
-server.use(express.json())
-server.use('/user', user)
+server.use(
+    cookieSession({
+        name: "laruina",
+        keys: ["asdasd"],
+        maxAge: 24*60*60*100
+    })
+);
+server.use(passport.initialize());
+server.use(morgan('dev'));
+server.use(express.json());
+server.use('/user', user);
 
 server.listen(3001, () => console.log(`Server status: Online`))

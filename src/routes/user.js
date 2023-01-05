@@ -1,9 +1,9 @@
 require('dotenv').config();
 const { aliasTest, emailTest, passwordTest} = process.env
 
-
 const express = require('express')
 const server = express.Router()
+
 /* -------------Account------------- */
 server.post('/createaccount', async (req,res,next)=>{
     const { alias, email, password } = req.body
