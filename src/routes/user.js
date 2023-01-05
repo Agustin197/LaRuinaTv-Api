@@ -56,6 +56,4 @@ server.post('/deletefavorite/:id', (req,res)=>{
     } else return res.status(400).send('error')
 })
 
-
-
-module.exports = server
+module.exports = {server}
