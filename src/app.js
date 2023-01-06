@@ -18,6 +18,7 @@ server.use(
 );
 
 server.use((req, res, next)=>{
+    console.log('request from: ', req.headers.origin)
     const corsList = [
         'http://localhost:3000',
         'http://localhost:3001',
