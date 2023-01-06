@@ -1,13 +1,24 @@
+require("dotenv").config();
 const morgan = require('morgan');
+const cors = require('cors')
 const express = require('express');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
-const passportSetup = require('../passport')
+const passportSetup = require('./passport');
 const server = express();
 
-const user = require('./routes/user.js');
+const routes = require('./routes/index.js');
+
+server.use(
+    cookieSession({
+        name: "session",
+        keys: ["asdasd"],
+        maxAge: 24*60*60*100
+    })
+);
 
 server.use((req, res, next)=>{
+    console.log('request from: ', req.headers.origin)
     const corsList = [
         'http://localhost:3000',
         'http://localhost:3001',
@@ -31,16 +42,20 @@ server.use((req, res, next)=>{
     } //testing ruteos
 });
 
-server.use(
-    cookieSession({
-        name: "laruina",
-        keys: ["asdasd"],
-        maxAge: 24*60*60*100
-    })
-);
 server.use(passport.initialize());
+server.use(passport.session());
+
+// server.use(
+//     cors({
+//         origin: "http://localhost:3000",
+//         methods: 'GET, POST, OPTIONS, PUT, DELETE',
+//         credentials: true
+//     })
+// ) SOLO TESTEO
+
+
 server.use(morgan('dev'));
 server.use(express.json());
-server.use('/user', user);
+server.use('/', routes);
 
-module.exports = { server }
+module.exports = server
