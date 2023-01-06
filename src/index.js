@@ -1,6 +1,4 @@
-require('dotenv').config
-
-const { port } = process.env
+const port = 3001
 const server = require('./app');
 const sequelize = require("./db.js");
 
@@ -18,4 +16,4 @@ const sequelize = require("./db.js");
 
 // main();
 
-server.listen(port, ()=> console.log(`server listening on port ${port? port:3001}`))//MODO PRUEBAS
+server.listen(port, ()=> console.log(`server listening on port ${port}`))//MODO PRUEBAS

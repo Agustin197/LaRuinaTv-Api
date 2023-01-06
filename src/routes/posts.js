@@ -2,7 +2,7 @@ const express = require('express')
 const server = express.Router()
 const { getPosts } = require('../controllers/index.js')
 
-server.get('/', async (req, res) => {
+server.get('/getall', async (req, res) => {
     const media = await getPosts()
     return res.status(200).send(media)
 })
