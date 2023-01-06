@@ -4,7 +4,6 @@ async function getPostList(db,folder1,folder2){
     const postList = []
     const folder1Files = await getFolderFiles(folder1).then(res=> {return res? res.reverse(): ['']})
     const folder2Files = await getFolderFiles(folder2).then(res=> {return res? res.reverse(): ['']})
-    console.log(folder1Files)
     for(let i in db){
         let post = {
             id: db[i].id,
