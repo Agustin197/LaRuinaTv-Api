@@ -16,6 +16,7 @@ server.post('/deleteaccount', async (req,res,next)=>{
     const { alias, email, password } = req.body
     if(alias === aliasTest && email === emailTest && password === passwordTest){
         return res.status(200).send('delete account: success') //test
+        
     } else return res.status(400).send('error')
 })
 
