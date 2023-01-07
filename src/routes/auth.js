@@ -4,7 +4,6 @@ const router = require('express').Router();
 const passport = require('passport');
 
 router.get("/login/success",(req,res)=>{
-    console.log(req)
     if(req.user) {
         res.status(200).json({
             error: false,
@@ -16,7 +15,7 @@ router.get("/login/success",(req,res)=>{
             error: true,
             message: "Not Authorized"
         })
-    }
+    } 
 })
 
 router.get("/login/failed",(req,res)=>{
