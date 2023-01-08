@@ -5,10 +5,6 @@ const { DB_LARUINATV_PRODUCTS } = require("../misc/product.js");
 const express = require('express')
 const server = express.Router()
 
-
-
-
-
 //-------------------user---------------------
 
 server.get('/all', (req, res) => {
