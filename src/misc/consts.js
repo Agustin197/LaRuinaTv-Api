@@ -1,21 +1,7 @@
-const { getUrlFileById } = require('../Functions/googleapis');
-
 require('dotenv').config();
 const { wogIcon, ruinaRecordsIcon} = process.env
 
 const DB_LARUINATV_MEDIA = [
-    {
-        id: '',
-        urlID: {idYT:'', idSpty:'', idDrive:''},
-        typeMedia: '',
-        titulo: "",
-        artista: "",
-        tag: "",
-        icon: [''],
-        categoria:[''],
-        boton1:'',
-        info: ''
-    },
     {
         id: 000,
         urlID: {idYT:'a', idSpty:'', idDrive:''},

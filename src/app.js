@@ -18,7 +18,7 @@ server.use(
 );
 
 server.use((req, res, next)=>{
-    console.log('request from: ', req.headers.referer)
+    console.log('request from: ', req.headers.origin)
     const corsList = [
         'http://localhost:3000',
         'http://localhost:3001',
@@ -26,8 +26,8 @@ server.use((req, res, next)=>{
         'https://laruinarecords.cl',
         'https://tv.laruinarecords.cl'
     ];
-    if(corsList.includes(req.headers.origin || req.headers.referer)){   
-        res.header('Access-Control-Allow-Origin', (req.headers.origin || req.headers.referer));
+    if(corsList.includes(req.headers.origin)){   
+        res.header('Access-Control-Allow-Origin', (req.headers.origin));
         res.header('Access-Control-Allow-Credentials', 'true');
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested, Content-Type, Accept');
         res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
