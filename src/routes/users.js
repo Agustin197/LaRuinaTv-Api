@@ -3,8 +3,6 @@ const server = express.Router();
 
 const { createUser, loginUser } = require("../controllers/users.js");
 
-/* -------------Account------------- */
-
 server.post("/signup", async (req, res) => {
   try {
     const response = await createUser(req, res);

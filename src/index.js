@@ -2,6 +2,7 @@ const port = 8080
 const server = require('./app');
 const { sequelize } = require("./db.js");
 
+
 async function main() {
     try {
       await sequelize.sync({force: true});
@@ -12,3 +13,4 @@ async function main() {
     }
 }
 main();
+
