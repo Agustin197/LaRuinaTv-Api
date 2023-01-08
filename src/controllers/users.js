@@ -1,10 +1,10 @@
-const User = require("../models/User.js")
+const {User} = require("../models/User.js")
 const bcrypt = require("bcrypt");
 
 const createUser = async (req, res) => {
   let { alias, email, password } = req.body;
   if (!alias) {
-    throw new Error("El nombre es requerido");
+    throw new Error("El alias es requerido");
   } else if (!email) {
     throw new Error("el email es requerido");
   } else if (!password) {
@@ -24,7 +24,8 @@ const createUser = async (req, res) => {
       password: hashPassword
     });
 
-    return "Usuario creado con éxito!";
+    
+    return "usuario creado con exito!"
     
   } catch (error) {
     return error;
@@ -43,17 +44,16 @@ const loginUser = async (req, res) => {
         if (!match) return res.status(400).json({ error: "Wrong Password" });
     
         const userId = user[0].id;
-        const name = user[0].name;
-        const lastname = user[0].lastname;
+        const userAlias = user[0].alias;
         const email = user[0].email;
     
         const payload = {
-          userId, name, lastname, email
+          userId, userAlias, email
         }
     
         return payload
       } catch (error) {
-        return res.status(500).json({ error: "error" });
+        return res.status(500).json({ error: error });
       }
 }
 
