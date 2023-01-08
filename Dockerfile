@@ -22,6 +22,7 @@ ENV NODE_ENV production
 COPY . .
 
 RUN npm install && npm run build
+
 FROM debian:bullseye
 
 LABEL fly_launch_runtime="nodejs"
