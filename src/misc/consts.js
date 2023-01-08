@@ -5,7 +5,7 @@ const { wogIcon, ruinaRecordsIcon} = process.env
 
 const DB_LARUINATV_MEDIA = [
     {
-        id: '-1',
+        id: '',
         urlID: {idYT:'', idSpty:'', idDrive:''},
         typeMedia: '',
         titulo: "",
