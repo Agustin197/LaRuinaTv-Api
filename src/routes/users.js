@@ -6,7 +6,7 @@ const { createUser, loginUser } = require("../controllers/users.js");
 server.post("/signup", async (req, res) => {
   try {
     const response = await createUser(req, res);
-    return res.status(200).json({ msg: response });
+    return res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

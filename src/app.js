@@ -53,7 +53,12 @@ server.use(passport.session());
 //     })
 // ) SOLO TESTEO
 
-
+const corsOptions ={
+    origin:'*', 
+    credentials:true,          
+    optionSuccessStatus:200
+}
+server.use(cors(corsOptions));
 server.use(morgan('dev'));
 server.use(express.json());
 server.use('/', routes);
