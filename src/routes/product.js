@@ -21,41 +21,21 @@ server.get('/:id', (req, res) => {
         return res.status(400).send('error')
     }
 })
->>>>>>> 21e26b974ecc4b61937f3fbb46177fa7858832e7
-
-//-------------------user---------------------
-
-<<<<<<< HEAD
-server.get('/all', (req, res) => {
-    try {
-        return res.status(200).send(DB_LARUINATV_PRODUCTS) //test
-    } catch (error) {
-        return res.status(400).send('error')
-    }
-})
-
-server.get('/payment', (req, res) => {
-=======
-// server.get('/all', (req, res) => {
+// server.get('/payment', (req, res) => {
+// // server.get('/all', (req, res) => {
+// //     try {
+// //         return res.status(200).send(DB_LARUINATV_PRODUCTS) //test
+// //     } catch (error) {
+// //         return res.status(400).send('error')
+// //     }
+// // })
+// // server.get('/payment', (req, res) => {
+   
 //     try {
-//         return res.status(200).send(DB_LARUINATV_PRODUCTS) //test
+//         return res.status(200).send(`transacción realizada correctamente`) //test
+
 //     } catch (error) {
 //         return res.status(400).send('error')
 //     }
 // })
-// server.get('/payment', (req, res) => {
->>>>>>> 21e26b974ecc4b61937f3fbb46177fa7858832e7
-   
-    try {
-        return res.status(200).send(`transacción realizada correctamente`) //test
-
-    } catch (error) {
-        return res.status(400).send('error')
-    }
-})
-
-
-
-
-
 module.exports = server; 
