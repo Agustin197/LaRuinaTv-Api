@@ -4,7 +4,7 @@ const { wogIcon, ruinaRecordsIcon} = process.env
 const DB_LARUINATV_MEDIA = [
     {
         id: 000,
-        urlID: {idYT:'a', idSpty:'', idDrive:''},
+        urlID: {idYT:'', idSpty:'', idDrive:''},
         typeMedia: 'serie',
         titulo: "Ainulindalë",
         artista: "World of Gwerh",
@@ -16,7 +16,7 @@ const DB_LARUINATV_MEDIA = [
     },
     {
         id: 001,
-        urlID: {idYT:'mZiusH3M8Uc&ab', idSpty:'', idDrive:''},
+        urlID: {idYT:'mZiusH3M8Uc', idSpty:'', idDrive:''},
         typeMedia: 'musica',
         titulo: "Círculo Vicioso",
         artista: "Derrumbe",
@@ -28,7 +28,7 @@ const DB_LARUINATV_MEDIA = [
     },
     {
         id: 002,
-        urlID: {idYT:'a', idSpty:'', idDrive:''},
+        urlID: {idYT:'A4QHsGibd34&', idSpty:'', idDrive:''},
         typeMedia: 'musica',
         titulo: "Paranoia en PerroNegro",
         artista: "Paranoia",
@@ -40,7 +40,7 @@ const DB_LARUINATV_MEDIA = [
     },
     {
         id: 003,
-        urlID: {idWeb:'a', idDrive:'', urlDescarga:''},
+        urlID: {idWeb:'ZUdNWa8kL3E', idDrive:'', urlDescarga:''},
         typeMedia: 'app',
         titulo: "Gwerh, the Bard",
         artista: "World of Gwerh",
@@ -52,7 +52,7 @@ const DB_LARUINATV_MEDIA = [
     },
     {
         id: 004,
-        urlID: {idYT:'a', idSpty:'', idDrive:''},
+        urlID: {idYT:'liBJys5OexY', idSpty:'', idDrive:''},
         typeMedia: 'musica',
         titulo: "Brutópolis",
         artista: "Urticaria",
@@ -64,7 +64,7 @@ const DB_LARUINATV_MEDIA = [
     },
     {
         id: 005,
-        urlID: {idYT:'a', idSpty:'', idDrive:''},
+        urlID: {idYT:'7C8SdVEpj9k&list=OLAK5uy_nlnLI24tL90QP7jgSfjC2ZhDMyxOrtLk4', idSpty:'', idDrive:''},
         typeMedia: 'musica',
         titulo: "Barrios Bajos Blues",
         artista: "Caña Blues",
@@ -76,7 +76,7 @@ const DB_LARUINATV_MEDIA = [
     },
     {
         id: 006,
-        urlID: {idWeb:'a', idDrive:'', urlDescarga:''},
+        urlID: {idWeb:'', idDrive:'', urlDescarga:''},
         typeMedia: 'libro',
         titulo: "La Espada Oxidada",
         artista: "World of Gwerh",
