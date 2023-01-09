@@ -6,11 +6,21 @@ const {
   generatePublicUrl,
   listProductsImages,
   getProductByName,
+  listHolis,
 } = require("../controllers/media.js");
 
 router.get("/list", async (req, res) => {
   try {
     let response = await listProductsImages();
+    res.json(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+router.get("/listHolis", async (req, res) => {
+  try {
+    let response = await listHolis();
     res.json(response);
   } catch (error) {
     console.log(error.message);

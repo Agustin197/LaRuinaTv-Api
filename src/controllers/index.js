@@ -5,7 +5,6 @@ const { DB_LARUINATV_MEDIA } = require('../misc/consts.js')
 
 async function getPosts(){
     const posts = await getPostList(DB_LARUINATV_MEDIA, VISOR_FOLDER)
-    console.log('los posts', posts)
     return posts
 }
 

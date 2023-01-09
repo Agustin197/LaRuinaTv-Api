@@ -8,7 +8,7 @@ async function getPostList(db, folder1) {
     const folder1Files = await getFolderFiles(folder1).then((res) => {
       return res ? res.reverse() : [""];
     });
-
+    ressss?.reverse()
     for (let i in db) {
       let post = {
         id: db[i].id,
@@ -30,7 +30,6 @@ async function getPostList(db, folder1) {
     
     
   });
-  console.log("LA POSTLIST: ", postList);
   return postList;
 }
 

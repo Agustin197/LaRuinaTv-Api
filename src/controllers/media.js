@@ -5,13 +5,13 @@ const { POST_CLIENT_ID, POST_CLIENT_SECRET, REDIRECT_URI, REFRESH_TOKEN } =
 const path = require("path");
 
 const oauth2Client = new google.auth.OAuth2(
-  POST_CLIENT_ID,
-  POST_CLIENT_SECRET,
-  "https://developers.google.com/oauthplayground"
+  '874900879874-5hn8fcdnj01vckdokqr9a6b6fgvo8mkh.apps.googleusercontent.com',
+  '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',
+  'https://developers.google.com/oauthplayground'
 );
 
 oauth2Client.setCredentials({
-  refresh_token: REFRESH_TOKEN,
+  refresh_token: '1//04GK7ANDS4PE1CgYIARAAGAQSNwF-L9Ir0ABvL2lHQwmDxbUC8th8siRL65J0-qLQxaBJ7l7HDNbX2oC0yI997bP8LeGnkRX-HXg'
 });
 
 const drive = google.drive({
@@ -42,12 +42,13 @@ const createFile = async () => {
 };
 
 async function uploadFile() {
-  const filePath = path.join(__dirname, "logo.jpg");
+  const filePath = path.join(__dirname, "LOGO.jpg");
 
   let fileMetadata = {
-    name: "Photo001",
-    mimeType: "image/jpeg",
-    laconchadetuhermana: "tuviejaentanga",
+    parents: ['1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe'],
+    appProperties: { laconchadetuhermana: "tuviejaentanga"},
+    name: "fotito.jpg", //file name
+    mimeType: "image/jpg",
   };
 
   let media = {
@@ -57,15 +58,9 @@ async function uploadFile() {
 
   try {
     const response = drive.files.create({
-      resource: {
-        parents: ["1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe"],
-        fileMetadata,
-      },
-      requestBody: {
-        name: "logooooooo.jpg", //file name
-        mimeType: "image/jpg",
-      },
+      resource: fileMetadata,
       media: media,
+      fields: 'id',
     });
     // report the response from the request
     console.log(response);
@@ -73,6 +68,21 @@ async function uploadFile() {
   } catch (error) {
     //report the error message
     console.log(error.message);
+  }
+}
+
+async function listHolis() {
+  try {
+    const response = await drive.files.list({
+      fileId: "1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe", //sliders
+      q: `'1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe' in parents`,
+      fields: "files(id, name, appProperties)",
+    });
+    console.log('LA RESPONSE', response)
+    console.log('LA RESPONSE DATA', response.data)
+    return response
+  }catch(e){
+    console.log(e)
   }
 }
 
@@ -85,10 +95,6 @@ async function listProductsImages() {
     });
 
     const objs = response.data.files.map((e) => e)
-    console.log(
-      "laRTAAAAAAAA: ",
-      response.data.files.map((e) => e)
-    );
 
     async function holaaa(e) {
       await drive.permissions.create({
@@ -105,8 +111,7 @@ async function listProductsImages() {
     }
 
     function imgLinks(id) {
-      var imgLink = `https://www.googleapis.com/drive/v3/files/${id}?supportsAllDrives=true&alt=media`;
-      console.log("la concha de tu hermana: ", imgLink);
+      var imgLink = `https://drive.google.com/uc?export=view&id=${id}`;
       return imgLink;
     }
     response.data.files.map(async (e) => {
@@ -161,4 +166,5 @@ module.exports = {
   getProductByName,
   listProductsImages,
   generatePublicUrl,
+  listHolis
 };
