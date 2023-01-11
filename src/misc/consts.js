@@ -4,7 +4,7 @@ const { wogIcon, ruinaRecordsIcon} = process.env
 const DB_LARUINATV_MEDIA = [
     {
         id: 000,
-        urlID: {idYT:'', idSpty:'', idDrive:''},
+        urlID: {idYT:'a', idSpty:'', idDrive:''},
         typeMedia: 'serie',
         titulo: "Ainulindalë",
         artista: "World of Gwerh",
@@ -28,7 +28,7 @@ const DB_LARUINATV_MEDIA = [
     },
     {
         id: 002,
-        urlID: {idYT:'A4QHsGibd34&', idSpty:'', idDrive:''},
+        urlID: {idYT:'A4QHsGibd34', idSpty:'', idDrive:''},
         typeMedia: 'musica',
         titulo: "Paranoia en PerroNegro",
         artista: "Paranoia",
