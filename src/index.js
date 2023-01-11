@@ -1,7 +1,6 @@
 const port = 8080
 const server = require('./app');
-const sequelize = require("./db.js");
-
+const { sequelize } = require("./db.js");
 
 async function main() {
     try {
@@ -12,6 +11,5 @@ async function main() {
       console.error("Unable to connect to database");
     }
 }
-
 main();
 
