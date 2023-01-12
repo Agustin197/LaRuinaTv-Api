@@ -134,47 +134,44 @@ async function listPostImages() {
       q: `'1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe' in parents`,
       fields: "files(id, name, appProperties)",
     });
+
+    const objs = response.data.files.map((e) => e)
+
+    async function createForGenerateUrl(e) {
+      await drive.permissions.create({
+        fileId: e.id,
+        requestBody: {
+          role: "reader",
+          type: "anyone",
+        },
+      });
+      await drive.files.get({
+        fileId: e.id,
+        fields: "webViewLink, webContentLink",
+      });
+
+      const linkimg = objs.map(o => imgLinks(o.id))
+      const prop = objs.map(o => o.appProperties)
+      console.log('LA PROP: ', prop)
+      console.log('LA PROP: ', prop)  
+      const {categories, info, connectionId, title, genre, artist } = prop[0]
+      return {sliderImg: linkimg[0], categories, info, connectionId, title, genre, artist}
+    }
+
+    function imgLinks(id) {
+      var imgLink = `https://drive.google.com/uc?export=view&id=${id}`;
+      return imgLink;
+    }
     response.data.files.map(async (e) => {
       const result = await createForGenerateUrl(e);
       return result
     });
 
-    const objs = response.data.files.map((e) => e)
-
-    await drive.files.get({
-      fileId: e.id,
-      fields: "webViewLink, webContentLink",
-    });
-    const linkimg = objs.map(o => imgLinks(o.id))
-    const prop = objs.map(o => o.appProperties)
-    console.log('LA PROP: ', prop)
-    console.log('LA IMG: ', linkimg)
-    let list = []
-    for(i in prop){
-      const {categories, info, connectionId, title, genre, artist } = prop[i]
-      return list.push({sliderImg: linkimg[i], categories, info, connectionId, title, genre, artist})
-    }
-    return list
   } catch (err) {
     console.log(err);
   }
 }
 
-function imgLinks(id) {
-  var imgLink = `https://drive.google.com/uc?export=view&id=${id}`;
-  return imgLink;
-}
-
-
-async function createForGenerateUrl(e) {
-  await drive.permissions.create({
-    fileId: e.id,
-    requestBody: {
-      role: "reader",
-      type: "anyone",
-    },
-  });
-}
 //--------Count Slider Images----------
 async function listAndCountSliderImgs() { 
   try {
