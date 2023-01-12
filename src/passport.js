@@ -5,9 +5,9 @@ const passport = require("passport");
 passport.use(
     new GoogleStrategy(
         {
-            clientID: process.env.CLIENT_ID,
-            clientSecret: process.env.CLIENT_SECRET,
-            callbackURL: "/auth/google/callback",
+            clientID: process.env.AUTH_CLIENT_ID,
+            clientSecret: process.env.AUTH_CLIENT_SECRET,
+            callbackURL: `${process.env.AUTH_CLIENT_URL}auth/google/callback`,   
             scope:["profile", "email"]
         },
         function (accessToken, refreshToken, profile, callback){

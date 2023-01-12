@@ -3,88 +3,97 @@ const { wogIcon, ruinaRecordsIcon} = process.env
 
 const DB_LARUINATV_MEDIA = [
     {
-        id: 000,
-        urlID: {idYT:'', idSpty:'', idDrive:''},
+        id: 0,
+        idMedia: {idYT:'', idSpty:'', idDrive:''},
         typeMedia: 'serie',
-        titulo: "Ainulindalë",
-        artista: "World of Gwerh",
+        title: "Ainulindalë",
+        artist: "World of Gwerh",
         tag: "Sello Arruinados",
         icon: [wogIcon, ruinaRecordsIcon],
-        categoria:['Música', 'Sello Arruinados', 'Series'],
-        boton1:'Ver',
-        info: 'Serie basada en los escritos de la extensa obra del autor británico "J.R.R Tolkien" que forman parte del "Legendarium"'
+        categories:['Música', 'Sello Arruinados', 'Series'],
+        actionButton:'Ver',
+        info: 'Serie basada en los escritos de la extensa obra del autor británico "J.R.R Tolkien" que forman parte del "Legendarium"',
+        genre: 'metal'
     },
     {
-        id: 001,
-        urlID: {idYT:'mZiusH3M8Uc', idSpty:'', idDrive:''},
+        id: 1,
+        idMedia: {idYT:'mZiusH3M8Uc', idSpty:'', idDrive:''},
         typeMedia: 'musica',
-        titulo: "Círculo Vicioso",
-        artista: "Derrumbe",
+        title: "Círculo Vicioso",
+        artist: "Derrumbe",
         tag: "Álbum",
         icon: [ruinaRecordsIcon],
-        categoria:['Música', 'Estudio "La Ruina Records"', 'Sello Arruinados'],
-        boton1:'Escuchar',
-        info:'Álbum de la banda "Derrumbe Punk". Grabado, mezclado y masterizado en nuestro estudio "La Ruina Records"'
+        categories:['Música', 'Estudio "La Ruina Records"', 'Sello Arruinados'],
+        actionButton:'Escuchar',
+        info:'Álbum de la banda "Derrumbe Punk". Grabado, mezclado y masterizado en nuestro estudio "La Ruina Records"',
+        genre: 'punk'
+
     },
     {
-        id: 002,
-        urlID: {idYT:'A4QHsGibd34&', idSpty:'', idDrive:''},
+        id: 2,
+        idMedia: {idYT:'A4QHsGibd34', idSpty:'', idDrive:''},
         typeMedia: 'musica',
-        titulo: "Paranoia en PerroNegro",
-        artista: "Paranoia",
+        title: "Paranoia en PerroNegro",
+        artist: "Paranoia",
         tag: "Lanzamiento en vivo",
         icon: [ruinaRecordsIcon],
-        categoria:['Música', 'En vivo', 'Sello Arruinados'],
-        boton1:'Escuchar',
-        info:'Lanzamiento en vivo del álbum "Pobre, Muerto, Aburrido" de la banda "Paranoia" en las estancias de "PerroNegro"'
+        categories:['Música', 'En vivo', 'Sello Arruinados'],
+        actionButton:'Escuchar',
+        info:'Lanzamiento en vivo del álbum "Pobre, Muerto, Aburrido" de la banda "Paranoia" en las estancias de "PerroNegro"',
+        genre: 'punk'
+
     },
     {
-        id: 003,
-        urlID: {idWeb:'ZUdNWa8kL3E', idDrive:'', urlDescarga:''},
+        id: 3,
+        idMedia: {idYT:'ZUdNWa8kL3E', idDrive:'', urlDescarga:''},
         typeMedia: 'app',
-        titulo: "Gwerh, the Bard",
-        artista: "World of Gwerh",
+        title: "Gwerh, the Bard",
+        artist: "World of Gwerh",
         tag: "App interactiva",  
         icon: [wogIcon, ruinaRecordsIcon],
-        categoria:['Música', 'Sello Arruinados', 'App y Descargables', 'Sello Arruinados'],
-        boton1:'Entrar',
-        info:'Acércate a escuchar las historias que el bardo tiene para contarte'
+        categories:['Música', 'Sello Arruinados', 'App y Descargables', 'Sello Arruinados'],
+        actionButton:'Entrar',
+        info:'Acércate a escuchar las historias que el bardo tiene para contarte',
+        genre: 'other'
     },
     {
-        id: 004,
-        urlID: {idYT:'liBJys5OexY', idSpty:'', idDrive:''},
+        id: 4,
+        idMedia: {idYT:'liBJys5OexY', idSpty:'', idDrive:''},
         typeMedia: 'musica',
-        titulo: "Brutópolis",
-        artista: "Urticaria",
+        title: "Brutópolis",
+        artist: "Urticaria",
         tag: "Sello Arruinados",     
         icon: [ruinaRecordsIcon],
-        categoria:['Música', 'Sello Arruinados'],
-        boton1:'Escuchar',
-        info:'Álbum de la banda "Urticaria", postproducido por "La Ruina Records"'
+        categories:['Música', 'Sello Arruinados'],
+        actionButton:'Escuchar',
+        info:'Álbum de la banda "Urticaria", postproducido por "La Ruina Records"',
+        genre: 'metal'
     },
     {
         id: 005,
-        urlID: {idYT:'7C8SdVEpj9k&list=OLAK5uy_nlnLI24tL90QP7jgSfjC2ZhDMyxOrtLk4', idSpty:'', idDrive:''},
+        idMedia: {idYT:'7C8SdVEpj9k', idSpty:'', idDrive:''}, //&list=OLAK5uy_nlnLI24tL90QP7jgSfjC2ZhDMyxOrtLk4
         typeMedia: 'musica',
-        titulo: "Barrios Bajos Blues",
-        artista: "Caña Blues",
+        title: "Barrios Bajos Blues",
+        artist: "Caña Blues",
         tag: "Álbum",   
         icon: [ruinaRecordsIcon],
-        categoria:['Sello Arruinados'],
-        boton1:'Escuchar',
-        info:'Álbum de la banda valdiviana de blues pesado llamada "Caña Blues", grabado en nuestro estudio "La Ruina Records"'
+        categories:['Sello Arruinados'],
+        actionButton:'Escuchar',
+        info:'Álbum de la banda valdiviana de blues pesado llamada "Caña Blues", grabado en nuestro estudio "La Ruina Records"',
+        genre: 'blues'
     },
     {
         id: 006,
-        urlID: {idWeb:'', idDrive:'', urlDescarga:''},
+        idMedia: {idWeb:'', idDrive:'', urlDescarga:''},
         typeMedia: 'libro',
-        titulo: "La Espada Oxidada",
-        artista: "World of Gwerh",
+        title: "La Espada Oxidada",
+        artist: "World of Gwerh",
         tag: "Literatura",
         icon: [ruinaRecordsIcon],
-        categoria:['Literatura', 'App y Descargables'],
-        boton1:'Leer',
-        info:'El relato de un errante sin destino en un viaje sin retorno'
+        categories:['Literatura', 'App y Descargables'],
+        actionButton:'Leer',
+        info:'El relato de un errante sin destino en un viaje sin retorno',
+        genre: 'literario'
     },
 ]
 

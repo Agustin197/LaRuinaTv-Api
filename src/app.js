@@ -52,7 +52,8 @@ server.use(passport.session());
 //         credentials: true
 //     })
 // ) SOLO TESTEO
-
+server.use(express.json())
+server.use(express.urlencoded({extended: true}));
 const corsOptions ={
     origin:'*', 
     credentials:true,          

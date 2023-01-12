@@ -16,7 +16,7 @@ server.get('/all', (req, res) => {
 server.get('/:id', (req, res) => {
     let {id} = req.params
     try {
-        return res.status(200).send(getProductById(id)) //test
+        return res.status(200).send(getProductById(DB_LARUINATV_PRODUCTS, id)) //test
     } catch (error) {
         return res.status(400).send('error')
     }

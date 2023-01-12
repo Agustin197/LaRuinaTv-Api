@@ -1,4 +1,4 @@
-const getProductById = (id) => { () => { return DB_LARUINATV_PRODUCTS.idProduct.find(id)} }
+const getProductById = (db, id) => { return db.filter(e=>{return e.idProduct=== +id}) }
 
 module.exports = {
     getProductById
