@@ -145,7 +145,7 @@ async function listPostImages() {
     const prop = objs.map(o => o.appProperties)
     let list = []
     for(i in prop){
-      const {categories, info, connectionId, title, genre, artist } = prop
+      const {categories, info, connectionId, title, genre, artist } = prop[i]
       return list.push({sliderImg: linkimg[0], categories, info, connectionId, title, genre, artist})
     }
     console.log('LA LISTA: ', list)
