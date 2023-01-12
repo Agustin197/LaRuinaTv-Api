@@ -152,8 +152,6 @@ async function listPostImages() {
       const list = []
       const linkimg = objs.map(o => imgLinks(o.id))
       const prop = objs.map(o => o.appProperties)
-      console.log('LA PROP: ', prop)
-      console.log('LA LINKIMG: ', linkimg) 
       for(i in prop){
         const {categories, info, connectionId, title, genre, artist } = prop[i]
         return list.push({sliderImg: linkimg[i], categories, info, connectionId, title, genre, artist})
