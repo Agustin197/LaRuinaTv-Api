@@ -12,9 +12,11 @@ const {
 //------ GET ALL IMAGES(SLIDERS & VISOR) -------
 
 router.get("/getall", async (req, res) => {
+  const list = []
   try {
-    let response = await listPostImages();
-    return res.status(200).json(response);
+    list.push(await listPostImages());
+    console.log('LA RESPONSE: ', list)
+    return res.status(200).json(list);
   } catch (error) {
     console.log(error.message);
   }
