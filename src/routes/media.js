@@ -1,51 +1,79 @@
 const { Router } = require("express");
 const router = Router();
-
+const fs = require("fs");
+const path = require("path");
+const os = require("os");
+const busboy = require("busboy");
 const {
   uploadFile,
-  generatePublicUrl,
-  listProductsImages,
-  getProductByName,
-  listHolis,
+  listPostImages,
 } = require("../controllers/media.js");
 
-router.get("/list", async (req, res) => {
+//------ GET ALL IMAGES(SLIDERS & VISOR) -------
+
+router.get("/getall", async (req, res) => {
   try {
-    let response = await listProductsImages();
-    res.json(response);
+    let response = await listPostImages();
+    return res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
   }
 });
 
-router.get("/listHolis", async (req, res) => {
-  try {
-    let response = await listHolis();
-    res.json(response);
-  } catch (error) {
-    console.log(error.message);
-  }
-});
+//----------- UPLOAD IMAGE ---------
 
-router.get("/upload", async (req, res) => {
+const uploadImage = async (mapping, res) => {
   try {
-    let response = await uploadFile();
-    console.log(response);
-    res.json(response);
+    const response = await uploadFile(
+      mapping
+    );
+    return res.status(200).json(response);
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
-});
+}
 
+const uploadImageTemp = async (req, res) => {
+  var mapping = new Map()
+  const bb = busboy({ headers: req.headers });
+  bb.on("file", (name, file, info) => {
+    const { filename, encoding, mimeType } = info;
+    console.log(
+      `File [${name}]: filename: %j, encoding: %j, mimeType: %j`,
+      filename,
+      encoding,
+      mimeType
+    );
+    if(name === 'imageSlider'){
+      console.log('image slider: ', filename)
+      mapping.set('imageSlider', filename)
+      const saveTo = path.join(os.tmpdir(), `slider-image-${filename}`);
+      file.pipe(fs.createWriteStream(saveTo));
+    }else if(name === 'imageVisor'){
+      console.log('image visor: ', filename)
+      if(filename === null){
+        mapping.set('imageVisor', null)
+        return
+      }
+      mapping.set('imageVisor', filename)
+      const saveTo = path.join(os.tmpdir(), `visor-image-${filename}`);
+      file.pipe(fs.createWriteStream(saveTo));
+    }
+  });
+  bb.on("field", (name, val) => {
+    mapping.set(name, val);
+  });
+  bb.on("close", () => {
+    console.log("Done uploading!");
+    uploadImage(mapping, res)
+  return 
+  });
+  req.pipe(bb);
+  
+}
 
-router.get("/generateUrl", async (req, res) => {
-  try {
-    let response = await generatePublicUrl(req);
-    console.log(response);
-    res.json(response);
-  } catch (error) {
-    console.log(error.message);
-  }
+router.post("/upload", async (req, res) => {
+  uploadImageTemp(req, res);
 });
 
 module.exports = router;

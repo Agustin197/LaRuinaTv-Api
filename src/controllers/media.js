@@ -1,8 +1,10 @@
 const { google } = require("googleapis");
 const fs = require("fs");
-const { POST_CLIENT_ID, POST_CLIENT_SECRET, REDIRECT_URI, REFRESH_TOKEN } =
+const os = require('os');
+const { POST_CLIENT_ID, POST_CLIENT_SECRET, REDIRECT_URI, REFRESH_TOKEN, VISOR_FOLDER, SLIDER_FOLDER } =
   process.env;
 const path = require("path");
+
 
 const oauth2Client = new google.auth.OAuth2(
   '874900879874-5hn8fcdnj01vckdokqr9a6b6fgvo8mkh.apps.googleusercontent.com',
@@ -19,12 +21,14 @@ const drive = google.drive({
   auth: oauth2Client,
 });
 
+//--------Create File----------
+
 const createFile = async () => {
   try {
     const response = await drive.files.create({
       metaData: {
         parents: ["1hbwrmkNOkkXU8_tsbH5_6SM0nwECs7JI"],
-        resource: { appProperties: { category: "tu vieja en tanga" } },
+        resource: { appProperties: { categories: "tu vieja en tanga" } },
       },
       requestBody: {
         name: "heyy.jpg", //file name
@@ -41,52 +45,149 @@ const createFile = async () => {
   }
 };
 
-async function uploadFile() {
-  const filePath = path.join(__dirname, "LOGO.jpg");
 
-  let fileMetadata = {
+//--------Upload File----------
+
+async function uploadFile(result) {
+  console.log('result: ', result)
+  const filePathSlider = path.join(os.tmpdir(), `slider-image-${result.get('imageSlider')}`);
+  const filePathVisor = path.join(os.tmpdir(), `visor-image-${result.get('imageVisor')}`);
+  const lengthSliders = await listAndCountSliderImgs()
+  const connectionId = `${result.get('title')}${lengthSliders}`
+  
+  let fileMetadataSlider = {
     parents: ['1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe'],
-    appProperties: { laconchadetuhermana: "tuviejaentanga"},
-    name: "fotito.jpg", //file name
+    appProperties: { 
+      'artist': result.get('artist'),
+      'title': result.get('title'),
+      'info': result.get('info'),
+      'connectionId': connectionId,
+      'idMedia': {'idYT': result.get('idLinkYT'), 'idSpoty': result.get('idLinkSPOTY'), 'idDrive': result.get('idLinkDRIVE'), 'urlWeb': result.get('urlLinkWEB'), 'urlDownload': result.get('urlLinkDOWNLOAD')},
+      'typeMedia': result.get('typeMedia'),
+      'categories': result.get('categories'),
+      'genre': result.get('genre')
+    },
+    name: result.get('imageSlider'), //file name
     mimeType: "image/jpg",
   };
 
-  let media = {
-    mimeType: "image/jpeg",
-    body: fs.createReadStream(filePath),
+  let fileMetadataVisor = {
+    parents: ['1XtXvvdt7wmHYNCPJ-kPLpuPOFqS70_1k'],
+    appProperties: { 
+      'connectionId': connectionId,
+    },
+    name: 'visor.jpg', //file name
+    mimeType: "image/jpg",
   };
 
+  let mediaSlider = {
+    mimeType: "image/jpg",
+    body: fs.createReadStream(filePathSlider),
+  };
+
+  let mediaVisor = {
+    mimeType: "image/jpg",
+    body: fs.createReadStream(filePathVisor),
+  };
   try {
-    const response = drive.files.create({
-      resource: fileMetadata,
-      media: media,
-      fields: 'id',
+    const responseSlider = await drive.files.create({
+      resource: fileMetadataSlider,
+      media: mediaSlider,
+      fields: "appProperties",
     });
-    // report the response from the request
-    console.log(response);
-    return response.data;
+
+    const responseVisor = await drive.files.create({
+      resource: fileMetadataVisor,
+      media: mediaVisor,
+      fields: "appProperties",
+    });
+    
+    console.log(responseSlider.data)
+    console.log(responseVisor.data)
+    return {responseSlider, responseVisor};
   } catch (error) {
-    //report the error message
     console.log(error.message);
   }
 }
 
-async function listHolis() {
+// async function listHolis() {
+//   try {
+//     const response = await drive.files.list({
+//       fileId: "1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe", //sliders
+//       q: `'1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe' in parents`,
+//       fields: 'files(id, name, properties)',
+//     });
+//     return response.data.files
+//   }catch(e){
+//     console.log(e)
+//   }
+// }
+
+
+
+//--------List Posts Slider Images----------
+
+async function listPostImages() { 
   try {
     const response = await drive.files.list({
-      fileId: "1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe", //sliders
+      fileId: "1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe", //slider 
       q: `'1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe' in parents`,
       fields: "files(id, name, appProperties)",
     });
-    console.log('LA RESPONSE', response)
-    console.log('LA RESPONSE DATA', response.data)
-    return response
+
+    const objs = response.data.files.map((e) => e)
+
+    async function createForGenerateUrl(e) {
+      await drive.permissions.create({
+        fileId: e.id,
+        requestBody: {
+          role: "reader",
+          type: "anyone",
+        },
+      });
+      await drive.files.get({
+        fileId: e.id,
+        fields: "webViewLink, webContentLink",
+      });
+
+      const linkimg = objs.map(o => imgLinks(o.id))
+      const prop = objs.map(o => o.appProperties)
+      const {categories, info, connectionId, title, genre, artist } = prop[0]
+      return {sliderImg: linkimg[0], categories, info, connectionId, title, genre, artist}
+    }
+
+    function imgLinks(id) {
+      var imgLink = `https://drive.google.com/uc?export=view&id=${id}`;
+      return imgLink;
+    }
+    response.data.files.map(async (e) => {
+      const result = await createForGenerateUrl(e);
+      console.log(result)
+      return result
+    });
+
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+//--------Count Slider Images----------
+async function listAndCountSliderImgs() { 
+  try {
+    const response = await drive.files.list({
+      fileId: "1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe", //slider 
+      q: `'1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe' in parents`,
+      fields: "files(appProperties)",
+    });
+    var slidersLength = response.data.files.length
+    return slidersLength
   }catch(e){
     console.log(e)
   }
 }
+//--------List Product Images----------
 
-async function listProductsImages() {
+async function listProdImages() {
   try {
     const response = await drive.files.list({
       fileId: "1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe", //sliders
@@ -96,7 +197,7 @@ async function listProductsImages() {
 
     const objs = response.data.files.map((e) => e)
 
-    async function holaaa(e) {
+    async function createFileToUpload(e) {
       await drive.permissions.create({
         fileId: e.id,
         requestBody: {
@@ -112,10 +213,11 @@ async function listProductsImages() {
 
     function imgLinks(id) {
       var imgLink = `https://drive.google.com/uc?export=view&id=${id}`;
+      console.log('el imgLink: ', imgLink)
       return imgLink;
     }
     response.data.files.map(async (e) => {
-      await holaaa(e);
+      await createFileToUpload(e);
     });
 
     return objs.map(o => imgLinks(o.id))
@@ -123,6 +225,8 @@ async function listProductsImages() {
     console.log(err);
   }
 }
+
+//--------Get Product By Name----------
 
 async function getProductByName() {
   try {
@@ -136,35 +240,10 @@ async function getProductByName() {
   }
 }
 
-async function generatePublicUrl(id) {
-  try {
-    const fileId = id;
-    await drive.permissions.create({
-      fileId: fileId,
-      requestBody: {
-        role: "reader",
-        type: "anyone",
-      },
-    });
-
-    await drive.files.get({
-      fileId: fileId,
-      fields: "webViewLink, webContentLink",
-    });
-
-    var imgLink = `https://www.googleapis.com/drive/v3/files/${id}`;
-    console.log("la concha de tu hermana: ", imgLink);
-    return imgLink;
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
 module.exports = {
   uploadFile,
   createFile,
   getProductByName,
-  listProductsImages,
-  generatePublicUrl,
-  listHolis
+  listProdImages,
+  listPostImages
 };
