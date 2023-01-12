@@ -137,38 +137,42 @@ async function listPostImages() {
 
     const objs = response.data.files.map((e) => e)
 
-    async function createForGenerateUrl(e) {
-      await drive.permissions.create({
-        fileId: e.id,
-        requestBody: {
-          role: "reader",
-          type: "anyone",
-        },
-      });
-      await drive.files.get({
-        fileId: e.id,
-        fields: "webViewLink, webContentLink",
-      });
-      const linkimg = objs.map(o => imgLinks(o.id))
-      const prop = objs.map(o => o.appProperties)
-      const {categories, info, connectionId, title, genre, artist } = prop[0]
-      return {sliderImg: linkimg[0], categories, info, connectionId, title, genre, artist}
-    }
-
-    function imgLinks(id) {
-      var imgLink = `https://drive.google.com/uc?export=view&id=${id}`;
-      return imgLink;
-    }
-    response.data.files.map(async (e) => {
-      const result = await createForGenerateUrl(e);
-      return result
+    await drive.files.get({
+      fileId: e.id,
+      fields: "webViewLink, webContentLink",
     });
-
+    const linkimg = objs.map(o => imgLinks(o.id))
+    const prop = objs.map(o => o.appProperties)
+    let list = []
+    for(i in prop){
+      const {categories, info, connectionId, title, genre, artist } = prop
+      return list.push({sliderImg: linkimg[0], categories, info, connectionId, title, genre, artist})
+    }
+    console.log('LA LISTA: ', list)
+    return list
   } catch (err) {
     console.log(err);
   }
 }
 
+function imgLinks(id) {
+  var imgLink = `https://drive.google.com/uc?export=view&id=${id}`;
+  return imgLink;
+}
+response.data.files.map(async (e) => {
+  const result = await createForGenerateUrl(e);
+  return result
+});
+
+async function createForGenerateUrl(e) {
+  await drive.permissions.create({
+    fileId: e.id,
+    requestBody: {
+      role: "reader",
+      type: "anyone",
+    },
+  });
+}
 //--------Count Slider Images----------
 async function listAndCountSliderImgs() { 
   try {
