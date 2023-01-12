@@ -13,8 +13,9 @@ const {
 
 router.get("/getall", async (req, res) => {
   try {
-    console.log('LA RESPONSE: ', listPostImages())
-    return res.status(200).json(list);
+    response = await listPostImages()
+    console.log('LA RESPONSE: ', response)
+    return res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
   }
