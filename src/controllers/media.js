@@ -147,7 +147,23 @@ async function createForGenerateUrl(e, index, objs) {
   const linkimg = objs.map(o => imgLinks(o.id))
   const prop = objs.map(o => o.appProperties)
   const {categories, info, connectionId, title, genre, artist } = prop[index]
-  return {sliderImg: linkimg[index], categories, info, connectionId, title, genre, artist}
+  return {
+    id: index,
+    idPost: index,
+    idMedia: [''], //falta
+    typeMedia: [''],//falta
+    title, 
+    artist,
+    tag: [''],//falta
+    sliderImage: linkimg[index], 
+    visorImage: linkimg[index], //falta
+    icon: [''], //falta
+    categories,
+    info,
+    actionButton: [''], //falta
+    genre,
+    connectionId
+  }
 }
 
 async function listPostImages() {
