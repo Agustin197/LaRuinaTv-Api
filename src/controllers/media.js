@@ -126,7 +126,30 @@ async function uploadFile(result) {
 
 
 //--------List Posts Slider Images----------
-
+function imgLinks(id) {
+  var imgLink = `https://drive.google.com/uc?export=view&id=${id}`;
+  return imgLink;
+}
+async function createForGenerateUrl(e, objs, list) {
+  await drive.permissions.create({
+    fileId: e.id,
+    requestBody: {
+      role: "reader",
+      type: "anyone",
+    },
+  });
+  await drive.files.get({
+    fileId: e.id,
+    fields: "webViewLink, webContentLink",
+  });
+  const linkimg = objs.map(o => imgLinks(o.id))
+  const prop = objs.map(o => o.appProperties)
+  for(i in prop){
+    console.log()
+    const {categories, info, connectionId, title, genre, artist } = prop[i]
+    return list.push({sliderImg: linkimg[i], categories, info, connectionId, title, genre, artist})
+  }
+}
 async function listPostImages() { 
   const list = []
   try {
@@ -138,33 +161,8 @@ async function listPostImages() {
 
     const objs = response.data.files.map((e) => e)
 
-    async function createForGenerateUrl(e) {
-      await drive.permissions.create({
-        fileId: e.id,
-        requestBody: {
-          role: "reader",
-          type: "anyone",
-        },
-      });
-      await drive.files.get({
-        fileId: e.id,
-        fields: "webViewLink, webContentLink",
-      });
-      const linkimg = objs.map(o => imgLinks(o.id))
-      const prop = objs.map(o => o.appProperties)
-      for(i in prop){
-        console.log()
-        const {categories, info, connectionId, title, genre, artist } = prop[i]
-        return list.push({sliderImg: linkimg[i], categories, info, connectionId, title, genre, artist})
-      }
-    }
-    
-    function imgLinks(id) {
-      var imgLink = `https://drive.google.com/uc?export=view&id=${id}`;
-      return imgLink;
-    }
     response.data.files.map(async (e) => {
-      const result = await createForGenerateUrl(e);
+      const result = await createForGenerateUrl(e, objs, list);
       return result
     });
     console.log('LA LIST: ', list)
