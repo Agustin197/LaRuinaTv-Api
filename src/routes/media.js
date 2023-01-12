@@ -10,9 +10,9 @@ const {
 } = require("../controllers/media.js");
 
 //------ GET ALL IMAGES(SLIDERS & VISOR) -------
+const list = []
 
 router.get("/getall", async (req, res) => {
-  const list = []
   try {
     list.push(await listPostImages());
     console.log('LA RESPONSE: ', list)

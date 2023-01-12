@@ -149,7 +149,6 @@ async function listPostImages() {
         fileId: e.id,
         fields: "webViewLink, webContentLink",
       });
-
       const linkimg = objs.map(o => imgLinks(o.id))
       const prop = objs.map(o => o.appProperties)
       const {categories, info, connectionId, title, genre, artist } = prop[0]
