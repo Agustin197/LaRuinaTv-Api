@@ -146,11 +146,10 @@ async function createForGenerateUrl(e, index, objs) {
 
   const linkimg = objs.map(o => imgLinks(o.id))
   const prop = objs.map(o => o.appProperties)
-  const {categories, info, connectionId, title, genre, artist } = prop[index]
+  const {categories, info, connectionId, title, genre, artist, idMedia } = prop[index]
   return {
     id: index,
-    idPost: index,
-    idMedia: [''], //falta
+    idMedia,
     typeMedia: [''],//falta
     title, 
     artist,
