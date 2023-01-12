@@ -149,7 +149,7 @@ async function createForGenerateUrl(e, index, objs) {
   const {categories, info, connectionId, title, genre, artist, idMedia } = prop[index]
   return {
     id: index,
-    idMedia,
+    idMedia: {idYT:'', idSpoty:'', idDrive:'', urlWeb:'', urlDownload},
     typeMedia: [''],//falta
     title, 
     artist,
