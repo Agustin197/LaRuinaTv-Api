@@ -134,6 +134,10 @@ async function listPostImages() {
       q: `'1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe' in parents`,
       fields: "files(id, name, appProperties)",
     });
+    response.data.files.map(async (e) => {
+      const result = await createForGenerateUrl(e);
+      return result
+    });
 
     const objs = response.data.files.map((e) => e)
 
@@ -159,10 +163,7 @@ function imgLinks(id) {
   var imgLink = `https://drive.google.com/uc?export=view&id=${id}`;
   return imgLink;
 }
-response.data.files.map(async (e) => {
-  const result = await createForGenerateUrl(e);
-  return result
-});
+
 
 async function createForGenerateUrl(e) {
   await drive.permissions.create({
