@@ -158,6 +158,7 @@ async function listPostImages() {
         const {categories, info, connectionId, title, genre, artist } = prop[i]
         return list.push({sliderImg: linkimg[i], categories, info, connectionId, title, genre, artist})
       }
+      console.log('LA LIST: ', list)
       return list
     }
 
