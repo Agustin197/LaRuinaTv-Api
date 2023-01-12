@@ -1,4 +1,4 @@
-const port = 8080
+const port = process.env.PORT || 8080
 const server = require('./app');
 const { sequelize } = require("./db.js");
 
