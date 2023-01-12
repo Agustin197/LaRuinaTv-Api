@@ -126,8 +126,47 @@ async function uploadFile(result) {
 
 
 //--------List Posts Slider Images----------
+function imgLinks(id) {
+  var imgLink = `https://drive.google.com/uc?export=view&id=${id}`;
+  return imgLink;
+}
 
-async function listPostImages() { 
+async function createForGenerateUrl(e, index, objs) {
+  await drive.permissions.create({
+    fileId: e.id,
+    requestBody: {
+      role: "reader",
+      type: "anyone",
+    },
+  });
+  await drive.files.get({
+    fileId: e.id,
+    fields: "webViewLink, webContentLink",
+  });
+
+  const linkimg = objs.map(o => imgLinks(o.id))
+  const prop = objs.map(o => o.appProperties)
+  const {categories, info, connectionId, title, genre, artist, idMedia } = prop[index]
+  return {
+    id: index,
+    idMedia: {idYT:'', idSpoty:'', idDrive:'', urlWeb:'', urlDownload},
+    typeMedia: [''],//falta
+    title, 
+    artist,
+    tag: [''],//falta
+    sliderImage: linkimg[index], 
+    visorImage: linkimg[index], //falta
+    icon: [''], //falta
+    categories,
+    info,
+    actionButton: [''], //falta
+    genre,
+    connectionId
+  }
+}
+
+async function listPostImages() {
+  const list=[]
   try {
     const response = await drive.files.list({
       fileId: "1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe", //slider 
@@ -136,36 +175,11 @@ async function listPostImages() {
     });
 
     const objs = response.data.files.map((e) => e)
-
-    async function createForGenerateUrl(e) {
-      await drive.permissions.create({
-        fileId: e.id,
-        requestBody: {
-          role: "reader",
-          type: "anyone",
-        },
-      });
-      await drive.files.get({
-        fileId: e.id,
-        fields: "webViewLink, webContentLink",
-      });
-
-      const linkimg = objs.map(o => imgLinks(o.id))
-      const prop = objs.map(o => o.appProperties)
-      const {categories, info, connectionId, title, genre, artist } = prop[0]
-      return {sliderImg: linkimg[0], categories, info, connectionId, title, genre, artist}
-    }
-
-    function imgLinks(id) {
-      var imgLink = `https://drive.google.com/uc?export=view&id=${id}`;
-      return imgLink;
-    }
-    response.data.files.map(async (e) => {
-      const result = await createForGenerateUrl(e);
-      console.log(result)
-      return result
+    const res = response.data.files.map(async (e, index) => {
+      list.push(await createForGenerateUrl(e, index, objs));
+      return list
     });
-
+    return res
   } catch (err) {
     console.log(err);
   }

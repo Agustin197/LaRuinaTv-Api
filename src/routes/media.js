@@ -12,14 +12,14 @@ const {
 //------ GET ALL IMAGES(SLIDERS & VISOR) -------
 
 router.get("/getall", async (req, res) => {
-  try {
-    let response = await listPostImages();
-    return res.status(200).json(response);
+  try{
+  const responses = await listPostImages();
+  Promise.all(await responses.at(0)).then(response=>{
+  return res.status(200).json(response)})
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
-});
-
+})
 //----------- UPLOAD IMAGE ---------
 
 const uploadImage = async (mapping, res) => {

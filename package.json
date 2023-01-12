@@ -24,9 +24,7 @@
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.8.0",
-    "sequelize": "^6.28.0"
-  },
-  "devDependencies": {
+    "sequelize": "^6.28.0",
     "nodemon": "^2.0.20"
   }
 }
