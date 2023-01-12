@@ -128,6 +128,7 @@ async function uploadFile(result) {
 //--------List Posts Slider Images----------
 
 async function listPostImages() { 
+  const list = []
   try {
     const response = await drive.files.list({
       fileId: "1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe", //slider 
@@ -149,17 +150,15 @@ async function listPostImages() {
         fileId: e.id,
         fields: "webViewLink, webContentLink",
       });
-      const list = []
       const linkimg = objs.map(o => imgLinks(o.id))
       const prop = objs.map(o => o.appProperties)
       for(i in prop){
+        console.log()
         const {categories, info, connectionId, title, genre, artist } = prop[i]
         return list.push({sliderImg: linkimg[i], categories, info, connectionId, title, genre, artist})
       }
-      console.log('LA LIST: ', list)
-      return list
     }
-
+    
     function imgLinks(id) {
       var imgLink = `https://drive.google.com/uc?export=view&id=${id}`;
       return imgLink;
@@ -168,6 +167,8 @@ async function listPostImages() {
       const result = await createForGenerateUrl(e);
       return result
     });
+    console.log('LA LIST: ', list)
+    return list
 
   } catch (err) {
     console.log(err);
