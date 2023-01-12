@@ -64,7 +64,7 @@ async function uploadFile(result) {
       'connectionId': connectionId,
       'idMedia': {'idYT': result.get('idLinkYT'), 'idSpoty': result.get('idLinkSPOTY'), 'idDrive': result.get('idLinkDRIVE'), 'urlWeb': result.get('urlLinkWEB'), 'urlDownload': result.get('urlLinkDOWNLOAD')},
       'typeMedia': result.get('typeMedia'),
-      'categories': result.get('categories'),
+      'categories': result.get('categories').split(','),
       'genre': result.get('genre')
     },
     name: result.get('imageSlider'), //file name
@@ -147,9 +147,10 @@ async function createForGenerateUrl(e, index, objs) {
   const linkimg = objs.map(o => imgLinks(o.id))
   const prop = objs.map(o => o.appProperties)
   const {categories, info, connectionId, title, genre, artist, idMedia } = prop[index]
+  console.log(categories)
   return {
     id: index,
-    idMedia: {idYT:'', idSpoty:'', idDrive:'', urlWeb:'', urlDownload},
+    idMedia,
     typeMedia: [''],//falta
     title, 
     artist,
@@ -157,7 +158,7 @@ async function createForGenerateUrl(e, index, objs) {
     sliderImage: linkimg[index], 
     visorImage: linkimg[index], //falta
     icon: [''], //falta
-    categories,
+    categories: categories.split(','),
     info,
     actionButton: [''], //falta
     genre,
