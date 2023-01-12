@@ -153,7 +153,7 @@ async function listPostImages() {
       const linkimg = objs.map(o => imgLinks(o.id))
       const prop = objs.map(o => o.appProperties)
       const {categories, info, connectionId, title, genre, artist } = prop[0]
-      return [{sliderImg: linkimg[0], categories, info, connectionId, title, genre, artist}]
+      return {sliderImg: linkimg[0], categories, info, connectionId, title, genre, artist}
     }
 
     function imgLinks(id) {
@@ -162,7 +162,6 @@ async function listPostImages() {
     }
     response.data.files.map(async (e) => {
       const result = await createForGenerateUrl(e);
-      console.log(result)
       return result
     });
 
