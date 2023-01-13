@@ -1,9 +1,9 @@
 const express = require("express");
-const server = express.Router();
+const router = express.Router();
 
-const { createUser, loginUser } = require("../controllers/users.js");
+const { createUser, loginUser, verifyEmail } = require("../controllers/users.js");
 
-server.post("/signup", async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     const response = await createUser(req, res);
     return res.status(200).json(response);
@@ -12,7 +12,7 @@ server.post("/signup", async (req, res) => {
   }
 });
 
-server.post("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const response = await loginUser(req, res);
     return res.status(200).json({ msg: response });
@@ -21,4 +21,17 @@ server.post("/login", async (req, res) => {
   }
 });
 
-module.exports = server
+router.get('/verify-email/:token', (req, res) => {
+  const token = req.params.token;
+  try {
+    const response = verifyEmail(token)
+    if(response){
+      return res.status(200).redirect(`http://localhost:3000/verify?message=verified`);
+    }
+  } catch (error) {
+    console.log(error)
+    return res.status(400).redirect('http://localhost:3000/verify?message=notverified');
+  }
+});
+
+module.exports = router

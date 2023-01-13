@@ -7,7 +7,7 @@ passport.use(
         {
             clientID: process.env.AUTH_CLIENT_ID,
             clientSecret: process.env.AUTH_CLIENT_SECRET,
-            callbackURL: `${process.env.AUTH_CLIENT_URL}auth/google/callback`,   
+            callbackURL: `https://la-ruina-api.fly.dev/auth/google/callback`,   
             scope:["profile", "email"]
         },
         function (accessToken, refreshToken, profile, callback){

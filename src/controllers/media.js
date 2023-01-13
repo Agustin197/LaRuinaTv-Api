@@ -49,7 +49,18 @@ const createFile = async () => {
 //--------Upload File----------
 
 async function uploadFile(result) {
-  console.log('result: ', result)
+  console.log('artist: ', result.get('artist'))
+  console.log('title: ', result.get('artist'))
+  console.log('info: ', result.get('artist'))
+  console.log('idLinkYT: ', result.get('idLinkYT'))
+  console.log('idLinkSPOTY: ', result.get('idLinkSPOTY'))
+  console.log('idLinkDRIVE: ', result.get('idLinkDRIVE'))
+  console.log('urlLinkWEB: ', result.get('urlLinkWEB'))
+  console.log('urlLinkDOWNLOAD: ', result.get('urlLinkDOWNLOAD'))
+  console.log('mediaType: ', result.get('mediaType'))
+  console.log('categories: ', result.get('categories'))
+  console.log('genre: ', result.get('genre'))
+
   const filePathSlider = path.join(os.tmpdir(), `slider-image-${result.get('imageSlider')}`);
   const filePathVisor = path.join(os.tmpdir(), `visor-image-${result.get('imageVisor')}`);
   const lengthSliders = await listAndCountSliderImgs()
@@ -62,9 +73,14 @@ async function uploadFile(result) {
       'title': result.get('title'),
       'info': result.get('info'),
       'connectionId': connectionId,
-      'idMedia': {'idYT': result.get('idLinkYT'), 'idSpoty': result.get('idLinkSPOTY'), 'idDrive': result.get('idLinkDRIVE'), 'urlWeb': result.get('urlLinkWEB'), 'urlDownload': result.get('urlLinkDOWNLOAD')},
-      'typeMedia': result.get('typeMedia'),
-      'categories': result.get('categories').split(','),
+      'idLinkYT': result.get('idLinkYT'),
+      'idLinkSPOTY': result.get('idLinkSPOTY'),
+      'idLinkDRIVE': result.get('idLinkDRIVE'),
+      'urlLinkWEB': result.get('urlLinkWEB'),
+      'urlLinkDOWNLOAD': result.get('urlLinkDOWNLOAD'),
+      'idMedia':{},
+      'mediaType': result.get('mediaType'),
+      'categories': result.get('categories'),
       'genre': result.get('genre')
     },
     name: result.get('imageSlider'), //file name
@@ -131,7 +147,7 @@ function imgLinks(id) {
   return imgLink;
 }
 
-async function createForGenerateUrl(e, index, objs) {
+async function createForGenerateUrl(e, index) {
   await drive.permissions.create({
     fileId: e.id,
     requestBody: {
@@ -144,26 +160,27 @@ async function createForGenerateUrl(e, index, objs) {
     fields: "webViewLink, webContentLink",
   });
 
-  const linkimg = objs.map(o => imgLinks(o.id))
-  const prop = objs.map(o => o.appProperties)
-  const {categories, info, connectionId, title, genre, artist, idMedia } = prop[index]
-  console.log(categories)
-  return {
-    id: index,
-    idMedia,
-    typeMedia: [''],//falta
-    title, 
-    artist,
-    tag: [''],//falta
-    sliderImage: linkimg[index], 
-    visorImage: linkimg[index], //falta
-    icon: [''], //falta
-    categories: categories.split(','),
-    info,
-    actionButton: [''], //falta
-    genre,
-    connectionId
-  }
+  const linkimg = imgLinks(e.id)
+  const prop = e.appProperties
+  const { idLinkSPOTY, idLinkDRIVE, urlLinkWEB, urlLinkDOWNLOAD, categories, info, connectionId, title, genre, artist, idMedia, idLinkYT, mediaType } = prop
+  return {linkimg, idLinkSPOTY, idLinkDRIVE, urlLinkWEB, urlLinkDOWNLOAD, categories, info, connectionId, title, genre, artist, idMedia, idLinkYT, mediaType} 
+  // console.log('MEIDAID',idMedia)
+  // return {
+  //   id: index,
+  //   idMedia: {idLinkYT, idLinkSPOTY, idLinkDRIVE, urlLinkWEB, urlLinkDOWNLOAD},
+  //   mediaType,
+  //   title, 
+  //   artist,
+  //   tag: [''],//falta
+  //   sliderImage: linkimg[index], 
+  //   visorImage: linkimg[index], //falta
+  //   icon: [''], //falta
+  //   categories,
+  //   info,
+  //   actionButton: [''], //falta
+  //   genre,
+  //   connectionId
+  //}
 }
 
 async function listPostImages() {
@@ -177,7 +194,7 @@ async function listPostImages() {
 
     const objs = response.data.files.map((e) => e)
     const res = response.data.files.map(async (e, index) => {
-      list.push(await createForGenerateUrl(e, index, objs));
+      list.push(await createForGenerateUrl(e, index));
       return list
     });
     return res
