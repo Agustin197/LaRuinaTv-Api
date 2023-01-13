@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const sgMail = require('@sendgrid/mail');
 const crypto = require('crypto');
 
+
 const createUser = async (req, res) => {
 
   sgMail.setApiKey('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');
@@ -67,6 +68,9 @@ const loginUser = async (req, res) => {
         const payload = {
           userId, userAlias, email
         }
+
+        
+
     
         return payload
       } catch (error) {

@@ -2,10 +2,13 @@ require("dotenv").config();
 const morgan = require('morgan');
 const cors = require('cors')
 const express = require('express');
-//const cookieSession = require('cookie-session');
+const cookieParser = require('cookie-parser')
 const passport = require('passport');
 const server = express();
+const session = require('express-session');
 const routes = require('./routes/index.js');
+
+server.use(session({ secret: 'dsgasdgsagafdgfgfdg' }));
 
 // server.use((req, res, next)=>{
 //     console.log('request from: ', req.headers.origin)
@@ -48,6 +51,7 @@ server.use(passport.initialize());
 //         credentials: true
 //     })
 // ) SOLO TESTEO
+server.use(cookieParser());
 server.use(express.json())
 server.use(express.urlencoded({extended: true}));
 // const corsOptions ={
