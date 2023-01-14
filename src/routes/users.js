@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require("jsonwebtoken");
 const { createUser, loginUser, verifyEmail } = require("../controllers/users.js");
+
 
 router.post("/signup", async (req, res) => {
   try {
@@ -11,22 +11,13 @@ router.post("/signup", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-
+//♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♫ ♫ ♫ ♫ ♫ ♫ ♫ ♫
 router.post("/login", async (req, res) => {
   try {
-    const response = await loginUser(req, res);
-    const refreshToken = jwt.sign(response, 'afhaisfanofiahrouifjxncksalfueqhirfua___SFaosifjaoimcxcnieusdjf',{
-      expiresIn: '1d'
-    })
-    const obj = {refreshToken, response}
-    return res.cookie('auth cookie', obj ,{
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000
-    }).status(200).json({
-      msg: response
-    })
+    const response = await loginUser(req, res)
+    res.json({ msg: response });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: error }); 
   }
 });
 

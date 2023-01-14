@@ -66,6 +66,15 @@ const uploadImageTemp = async (req, res) => {
   });
   bb.on("close", () => {
     console.log("Done uploading!");
+
+///////////////// CODIGO PARA ENVIAR CORREO (NUEVA MEDIA)///////////////////
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////
     uploadImage(mapping, res)
   return 
   });
@@ -76,5 +85,19 @@ const uploadImageTemp = async (req, res) => {
 router.post("/upload", async (req, res) => {
   uploadImageTemp(req, res);
 });
+
+router.get("/search/", async (req, res) => {
+  const {name} = req.query
+  console.log(req.query)
+  try{
+    const responses = await listPostImages();
+    Promise.all(await responses.at(0)).then(response=>{
+      const resp = response.filter(e => e.title.includes(name))
+    return res.status(200).json(resp)})
+    } catch (error) {
+      console.log(error);
+    }
+  }
+)
 
 module.exports = router;
