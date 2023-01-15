@@ -4,10 +4,13 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 const busboy = require("busboy");
+const {User} = require("../models/User.js");
 const {
   uploadFile,
   listPostImages,
 } = require("../controllers/media.js");
+const sgMail = require('@sendgrid/mail');
+const { SENDGRID_API } = process.env;
 
 //------ GET ALL IMAGES(SLIDERS & VISOR) -------
 
@@ -21,6 +24,23 @@ router.get("/getall", async (req, res) => {
     console.log(error);
   }
 })
+
+router.get("/:id", async (req, res) => {
+  const {id} = req.params
+  console.log('LLA params id', req.params.id, 'TIPO',typeof req.params.id)
+  try{
+    const responses = await listPostImages();
+    Promise.all(await responses.at(0)).then(response=>{
+      console.log('LA RESPONSE', response)
+      const resp = response.filter(e => e.id === id)
+      console.log('EL RESP', resp)
+      return res.status(200).json(resp)})
+    } catch (error) {
+      console.log(error);
+    }
+  }
+)
+
 //----------- UPLOAD IMAGE ---------
 
 const uploadImage = async (mapping, res) => {
@@ -65,21 +85,33 @@ const uploadImageTemp = async (req, res) => {
     mapping.set(name, val);
   });
   bb.on("close", () => {
-    console.log("Done uploading!");
-
+    console.log("Done uploading!")
+    uploadImage(mapping, res)
+    sgMail.setApiKey(SENDGRID_API);
+    getEmails()
+  });
+  
+  req.pipe(bb);
+}
 ///////////////// CODIGO PARA ENVIAR CORREO (NUEVA MEDIA)///////////////////
 
-
-
-
-
-
-////////////////////////////////////////////////////////////////////////////
-    uploadImage(mapping, res)
-  return 
-  });
-  req.pipe(bb);
-  
+async function getEmails() {
+  try {
+    const usersEmails = await User.findAll({
+      attributes: ['email']
+    });
+    usersEmails.forEach(email => {
+      const msgNewPost = {
+        to: email,
+        from: 'terminalkillerproject@gmail.com',
+        subject: 'La Ruina TV ha publicado algo nuevo',
+        html: '<p>¡Hola! hemos lanzado una nueva cancion, ven y échale un vistazo: </p>',
+      };
+    sgMail.send(msgNewPost);
+  })
+  }catch(e){
+    console.log(e)
+  };
 }
 
 router.post("/upload", async (req, res) => {

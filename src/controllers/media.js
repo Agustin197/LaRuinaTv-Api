@@ -69,6 +69,7 @@ async function uploadFile(result) {
   let fileMetadataSlider = {
     parents: ['1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe'],
     appProperties: { 
+      'id': Number(lengthSliders),
       'artist': result.get('artist'),
       'title': result.get('title'),
       'info': result.get('info'),
@@ -162,8 +163,8 @@ async function createForGenerateUrl(e, index) {
 
   const linkimg = imgLinks(e.id)
   const prop = e.appProperties
-  const { idLinkSPOTY, idLinkDRIVE, urlLinkWEB, urlLinkDOWNLOAD, categories, info, connectionId, title, genre, artist, idMedia, idLinkYT, mediaType } = prop
-  return {linkimg, idLinkSPOTY, idLinkDRIVE, urlLinkWEB, urlLinkDOWNLOAD, categories, info, connectionId, title, genre, artist, idMedia, idLinkYT, mediaType} 
+  const { id, idLinkSPOTY, idLinkDRIVE, urlLinkWEB, urlLinkDOWNLOAD, categories, info, connectionId, title, genre, artist, idMedia, idLinkYT, mediaType } = prop
+  return { id, linkimg, idLinkSPOTY, idLinkDRIVE, urlLinkWEB, urlLinkDOWNLOAD, categories, info, connectionId, title, genre, artist, idMedia, idLinkYT, mediaType} 
   // console.log('MEIDAID',idMedia)
   // return {
   //   id: index,
