@@ -121,7 +121,7 @@ router.post("/upload", async (req, res) => {
 
 router.get("/search/", async (req, res) => {
   const {name} = req.query
-  console.log('la query', req.query)
+  console.log('la req', req)
   try{
     const responses = await listPostImages();
     Promise.all(await responses.at(0)).then(response=>{
