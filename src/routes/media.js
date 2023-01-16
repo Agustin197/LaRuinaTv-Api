@@ -124,7 +124,7 @@ router.get("/search?", async (req, res) => {
   const {name} = req.query
   try{
     const responses = await listPostImages();
-    Promise.all(await responses.at(0)).then(response=>{
+    Promise.all(await responses?.at(0)).then(response=>{
       const resp = response.filter(e => e.title.includes(name))
     return res.status(200).json(resp)})
     } catch (error) {
