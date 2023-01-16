@@ -5,7 +5,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser')
 const passport = require('passport');
 const server = express();
-const session = require('express-session');
+const session = require('cookie-session');
 const routes = require('./routes/index.js');
 
 server.use(session({ secret: 'dsgasdgsagafdgfgfdg',
