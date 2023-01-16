@@ -22,6 +22,7 @@ router.get("/getall", async (req, res) => {
   return res.status(200).json(response)})
   } catch (error) {
     console.log(error);
+    return res.status(400)
   }
 })
 
@@ -31,7 +32,7 @@ router.get("/:id", async (req, res) => {
   try{
     const responses = await listPostImages();
     Promise.all(await responses.at(0)).then(response=>{
-      console.log('LA RESPONSE', response)
+      console.log('LA RESPONSE', response) 
       const resp = response.filter(e => e.id === id)
       console.log('EL RESP', resp)
       return res.status(200).json(resp)})
@@ -120,7 +121,7 @@ router.post("/upload", async (req, res) => {
 
 router.get("/search/", async (req, res) => {
   const {name} = req.query
-  console.log(req.query)
+  console.log('la query', req.query)
   try{
     const responses = await listPostImages();
     Promise.all(await responses.at(0)).then(response=>{
