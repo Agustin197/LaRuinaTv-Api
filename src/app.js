@@ -8,7 +8,7 @@ const server = express();
 const session = require('express-session');
 const routes = require('./routes/index.js');
 
-server.use(session({ secret: 'dsgasdgsagafdgfgfdg' }));
+server.use(session({ secret: 'akuhiljajalañl' }));
 
 // server.use((req, res, next)=>{
 //     console.log('request from: ', req.headers.origin)
