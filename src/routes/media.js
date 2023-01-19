@@ -8,6 +8,7 @@ const {User} = require("../models/User.js");
 const {
   uploadFile,
   listPostImages,
+  contentController
 } = require("../controllers/media.js");
 const sgMail = require('@sendgrid/mail');
 const { SENDGRID_API } = process.env;
@@ -41,6 +42,14 @@ router.get("/:id", async (req, res) => {
     }
   }
 )
+
+////////// LIKE //////////////
+//////////// EN DESARROLLO /////////
+
+router.post('/:id/like', contentController.likeContent);
+
+//////////// EN DESARROLLO /////////
+////////// LIKE //////////////
 
 //----------- UPLOAD IMAGE ---------
 

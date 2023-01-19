@@ -5,9 +5,9 @@ const express = require('express');
 const cookieParser = require('cookie-parser')
 const passport = require('passport');
 const server = express();
-const session = require('cookie-session');
+const session = require('express-session');
 const routes = require('./routes/index.js');
-
+server.use(cookieParser());
 server.use(session({ secret: 'dsgasdgsagafdgfgfdg',
                     resave: true,
                     saveUninitialized: true }));
@@ -36,13 +36,19 @@ server.use(session({ secret: 'dsgasdgsagafdgfgfdg',
 //         next();
 //     } //testing ruteos
 // });
-server.use(cors({ origin: '*' }));
-server.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-    next();
-});
+// server.use(cors({ origin: 'http://localhost:3000' }));
+const corsOptions ={
+    origin:`http://localhost:3000`, 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+server.use(cors(corsOptions));
+// server.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+//     next();
+// });
 server.use(passport.initialize());
 //server.use(passport.session());
 
@@ -53,7 +59,7 @@ server.use(passport.initialize());
 //         credentials: true
 //     })
 // ) SOLO TESTEO
-server.use(cookieParser());
+// server.use(cookieParser());
 server.use(express.json())
 server.use(express.urlencoded({extended: true}));
 // const corsOptions ={

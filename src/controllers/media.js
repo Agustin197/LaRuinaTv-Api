@@ -4,16 +4,18 @@ const os = require('os');
 const { POST_CLIENT_ID, POST_CLIENT_SECRET, REDIRECT_URI, REFRESH_TOKEN, VISOR_FOLDER, SLIDER_FOLDER } =
   process.env;
 const path = require("path");
+const express = require('express');
+const router = express.Router();
 
 
 const oauth2Client = new google.auth.OAuth2(
   '874900879874-5hn8fcdnj01vckdokqr9a6b6fgvo8mkh.apps.googleusercontent.com',
-  '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',
+  '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',
   'https://developers.google.com/oauthplayground'
 );
 
 oauth2Client.setCredentials({
-  refresh_token: '1//04GK7ANDS4PE1CgYIARAAGAQSNwF-L9Ir0ABvL2lHQwmDxbUC8th8siRL65J0-qLQxaBJ7l7HDNbX2oC0yI997bP8LeGnkRX-HXg'
+  refresh_token: '1//04bBJy2i85i_-CgYIARAAGAQSNwF-L9IruH7YsCtWSwbptTj68fkN7yIXbO-xona6kDzuQuvaCfEyuP7-vc6cJXPp81_t0bABXrs'
 });
 
 const drive = google.drive({
@@ -281,10 +283,37 @@ async function getProductByName() {
 //   }
 // }
 
+///////////// LIKE /////////////////
+//////////// EN DESARROLLO /////////
+
+let contents = [];
+
+const contentController = {}
+
+contentController.likeContent = function(req, res){
+
+  const id = req.params.id;
+
+  const content = contents.find((c) => c.id === id);
+
+  if (!content) {
+    return res.status(404).json({ message: 'Contenido multimedia no encontrado' });
+  }
+
+  content.likes += 1;
+
+  res.json({ message: 'Me gusta agregado', likes: content.likes });
+};
+
+//////////// EN DESARROLLO /////////
+///////////////////////////////////
+
+
 module.exports = {
   uploadFile,
   createFile,
   getProductByName,
   listProdImages,
-  listPostImages
+  listPostImages,
+  contentController
 };
