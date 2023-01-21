@@ -33,9 +33,7 @@ router.get("/:id", async (req, res) => {
   try{
     const responses = await listPostImages();
     Promise.all(await responses.at(0)).then(response=>{
-      console.log('LA RESPONSE', response) 
       const resp = response.filter(e => e.id === id)
-      console.log('EL RESP', resp)
       return res.status(200).json(resp)})
     } catch (error) {
       console.log(error);
@@ -128,14 +126,27 @@ router.post("/upload", async (req, res) => {
   uploadImageTemp(req, res);
 });
 
-router.get("/search?", async (req, res) => {
-  console.log('LAAAA REEEEQQQ QUERYYYYYYYYYYYYYYYYYYYY', req.query)
+router.get('/edit/:id', async(req, res) => {
+  try {
+    const response = await getEditMedia(req)
+    return res.status(200).json(response)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+router.get("/search/s", async (req, res) => {
   const {name} = req.query
-  try{
-    const responses = await listPostImages();
-    Promise.all(await responses?.at(0)).then(response=>{
-      const resp = response.filter(e => e.title.includes(name))
-    return res.status(200).json(resp)})
+  console.log('LAAAA REEEEQQQ QUERYYYYYYYYYYYYYYYYYYYY', name)
+    try{
+      const responses = await listPostImages()
+      const resolvedResponses = await Promise.all(responses)
+      const flattenResponses = Array.prototype.concat.apply([], resolvedResponses)
+      const uniqueResponses = Array.from(new Set(flattenResponses));
+      console.log('NEW ARR RESPS: ', uniqueResponses)
+      const resp = uniqueResponses.filter(obj => obj.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")));
+      console.log('el puto resp', resp)
+      return res.status(200).json(resp ? resp : 'No existen titulos con ese nombre')
     } catch (error) {
       console.log(error);
     }

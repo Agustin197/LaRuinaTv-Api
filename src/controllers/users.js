@@ -86,6 +86,62 @@ const loginUser = async (req, res) => {
       }
 }
 
+const loginUserWithGoogle = async (req, res) => {
+  const { accessToken } = req.body
+  console.log(accessToken)
+  try {
+      const user = await User.findAll({
+        where: {
+          token: accessToken,
+        },
+      });
+  
+      if (user){
+        const userId = user[0].id;
+        const userAlias = user[0].alias;
+        const email = user[0].email;
+        const role = user[0].role;
+  
+        const payload = {
+          userId, userAlias, email, role
+        }
+  
+        return payload
+      }
+      return 'token invalido'
+    } catch (error) {
+      return console.log(error)
+    }
+}
+
+const signUpUserWithGoogle = async (req, res) => {
+  const { accessToken } = req.body
+  console.log(accessToken)
+  try {
+      const user = await User.findAll({
+        where: {
+          token: accessToken,
+        },
+      });
+  
+      if (user){
+        const userId = user[0].id;
+        const userAlias = user[0].alias;
+        const email = user[0].email;
+        const role = user[0].role;
+  
+        const payload = {
+          userId, userAlias, email, role
+        }
+  
+        return payload
+      }
+      return 'token invalido'
+    } catch (error) {
+      return console.log(error)
+    }
+}
+
 const sendVerificationEmail = (userEmail, token) => {
   const msg = {
       to: userEmail,
@@ -110,4 +166,4 @@ const verifyEmail = async (token) => {
   }
 }
 
-module.exports = {createUser, loginUser, verifyEmail}
+module.exports = {createUser, loginUser, verifyEmail, loginUserWithGoogle}

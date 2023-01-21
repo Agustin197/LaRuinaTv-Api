@@ -117,7 +117,8 @@ const routes = require('./routes/index.js');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 require('./passport');
-  
+const {User} = require('./models/User');
+const { where } = require("sequelize");
 server.use(cookieSession({
     name: 'google-auth-session',
     keys: ['key1', 'key2'],
@@ -140,10 +141,16 @@ server.use(function(request, response, next) {
 server.use(passport.initialize());
 server.use(passport.session());
 
+server.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "GET");
+    next();
+});
+
 const corsOptions ={
     origin:'http://localhost:3000', 
-    credentials:true,          
-    optionSuccessStatus:200
+    credentials:true
 }
 server.use(cors(corsOptions));
 
@@ -151,8 +158,7 @@ server.use(express.json())
 server.use(express.urlencoded({extended: true}));
 
 server.get('/auth' , passport.authenticate('google', { scope:
-    [ 'email', 'profile' ]
-}));
+    [ 'email', 'profile','https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/plus.me'],accessType: 'offline'}));
   
 // Auth Callback
 server.get( '/auth/google/callback',
@@ -162,36 +168,35 @@ server.get( '/auth/google/callback',
 }));
   
 // Success 
-server.get('/auth/callback/success' , (req , res) => {
+server.get('/auth/callback/success' , async (req , res) => {
     if(!req.user){
         res.redirect('/auth/callback/failure');
     }
-    req.session.user = req.user
-    console.log('la session', req.session)
-    res.cookie('googleUser', JSON.stringify(req.user))
-    res.redirect("http://localhost:3000");
+    const accessToken = req.user.accessToken;
+    const existingUser = await User.findOne({where: {
+            token: req.user.accessToken,
+    }});
+    if (existingUser) {
+          // If user exists, return the user
+        return  res.redirect(`http://localhost:3000/auth?token=${accessToken}`)
+    }
+  
+        // If user does not exist, create a new user
+        await User.create({
+          alias: req.user.displayName,
+          email: req.user.emails[0].value,
+          //googleId: req.user.id.id,
+          method: 'google',
+          isVerified: true,
+          token: req.user.accessToken,
+          role: 'free'
+      });
+      return res.redirect(`http://localhost:3000/auth?token=${accessToken}`)
 });
   
 // failure
 server.get('/auth/callback/failure' , (req , res) => {
     res.send("Error");
-})
-
-server.get('/auth/getuser' , (req , res) => {
-    if(req.session){
-        console.log(req.session)
-        console.log(req.cookies)
-        console.log(req.session.cookie)
-        return res.json(req.session)
-    }else{
-    // if(req.user){
-    //     return res.json(req.user)
-    //}else {
-        return res.status(401).json({
-            error: true,
-            message: "Not Authorized"
-        })
-    }
 })
   
 server.use('/', routes);

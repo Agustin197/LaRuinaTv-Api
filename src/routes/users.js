@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createUser, loginUser, verifyEmail } = require("../controllers/users.js");
+const { createUser, loginUser, verifyEmail, loginUserWithGoogle } = require("../controllers/users.js");
 
 
 router.post("/signup", async (req, res) => {
@@ -15,6 +15,15 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const response = await loginUser(req, res)
+    res.json({ msg: response });
+  } catch (error) {
+    res.status(400).json({ error: error }); 
+  }
+});
+
+router.post("/loginwithgoogle", async (req, res) => {
+  try {
+    const response = await loginUserWithGoogle(req, res)
     res.json({ msg: response });
   } catch (error) {
     res.status(400).json({ error: error }); 

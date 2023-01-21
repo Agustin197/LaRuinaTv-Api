@@ -200,6 +200,7 @@ async function listPostImages() {
       list.push(await createForGenerateUrl(e, index));
       return list
     });
+    console.log('el resssssssss!!!!!')
     return res
   } catch (err) {
     console.log(err);
@@ -307,7 +308,32 @@ contentController.likeContent = function(req, res){
 
 //////////// EN DESARROLLO /////////
 ///////////////////////////////////
+const editMedia = (req) => {
+  const { id } = req.params
 
+  drive.files.update({
+    fileId: id,
+    resource: {"appProperties": {"key": "value"}},
+    fields: 'id,appProperties',
+  });
+
+}
+
+const getEditMedia = async (req) => {
+  const { id } = req.params
+
+  try {
+    const response = await drive.files.get({
+      fileId: id,
+      fields: 'appProperties'
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error)
+  }
+  
+
+}
 
 module.exports = {
   uploadFile,
@@ -315,5 +341,6 @@ module.exports = {
   getProductByName,
   listProdImages,
   listPostImages,
-  contentController
+  contentController,
+  getEditMedia
 };
