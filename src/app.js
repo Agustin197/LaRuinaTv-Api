@@ -7,7 +7,7 @@
 // const passport = require('passport');
 // const cookieSession = require('cookie-session');
 // require('./passport');
-  
+
 // server.use(cookieSession({
 //     name: 'google-auth-session',
 //     keys: ['key1', 'key2'],
@@ -117,15 +117,15 @@ const routes = require('./routes/index.js');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 require('./passport');
-const {User} = require('./models/User');
-const { where } = require("sequelize");
+const { User } = require('./models/User');
+
 server.use(cookieSession({
     name: 'google-auth-session',
     keys: ['key1', 'key2'],
     debug: true
 }));
 
-server.use(function(request, response, next) {
+server.use(function (request, response, next) {
     if (request.session && !request.session.regenerate) {
         request.session.regenerate = (cb) => {
             cb()
@@ -141,64 +141,74 @@ server.use(function(request, response, next) {
 server.use(passport.initialize());
 server.use(passport.session());
 
-server.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.header("Access-Control-Allow-Credentials", "true");
-    res.header("Access-Control-Allow-Methods", "GET");
-    next();
-});
+// server.use(function (req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "https://la-ruina-tv-client.vercel.app");
+//     res.header("Access-Control-Allow-Credentials", "true");
+//     res.header("Access-Control-Allow-Methods", "GET");
+//     next();
+// });
 
-const corsOptions ={
-    origin:'http://localhost:3000', 
-    credentials:true
+const corsOptions = {
+    origin: ['https://la-ruina-tv-client.vercel.app'],
+    credentials: true
 }
 server.use(cors(corsOptions));
 
 server.use(express.json())
-server.use(express.urlencoded({extended: true}));
+server.use(express.urlencoded({ extended: true }));
 
-server.get('/auth' , passport.authenticate('google', { scope:
-    [ 'email', 'profile','https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/plus.me'],accessType: 'offline'}));
-  
+server.get('/auth', passport.authenticate('google', {
+    scope:
+        ['email', 'profile', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/plus.me'], accessType: 'offline'
+}));
+
 // Auth Callback
-server.get( '/auth/google/callback',
-    passport.authenticate( 'google', {
+server.get('/auth/google/callback',
+    passport.authenticate('google', {
         successRedirect: '/auth/callback/success',
         failureRedirect: '/auth/callback/failure'
-}));
-  
+    }));
+
 // Success 
-server.get('/auth/callback/success' , async (req , res) => {
-    if(!req.user){
+server.get('/auth/callback/success', async (req, res) => {
+    if (!req.user) {
         res.redirect('/auth/callback/failure');
     }
     const accessToken = req.user.accessToken;
-    const existingUser = await User.findOne({where: {
-            token: req.user.accessToken,
-    }});
+    const existingUser = await User.findOne({
+        where: {
+            email: req.user.emails[0].value,
+        }
+    });
+    
     if (existingUser) {
-          // If user exists, return the user
-        return  res.redirect(`http://localhost:3000/auth?token=${accessToken}`)
+        await User.update(
+            { token: req.user.accessToken },
+            { where: { email: req.user.emails[0].value, } }
+        )
+        return res.redirect(`https://la-ruina-tv-client.vercel.app/auth?token=${accessToken}`)
     }
-  
-        // If user does not exist, create a new user
-        await User.create({
-          alias: req.user.displayName,
-          email: req.user.emails[0].value,
-          //googleId: req.user.id.id,
-          method: 'google',
-          isVerified: true,
-          token: req.user.accessToken,
-          role: 'free'
-      });
-      return res.redirect(`http://localhost:3000/auth?token=${accessToken}`)
+    await User.create({
+        alias: req.user.name.givenName,
+        email: req.user.emails[0].value,
+        googleId: req.user.id,
+        method: 'google',
+        isVerified: true,
+        token: req.user.accessToken,
+        role: 'common_user',
+        googlePic: req.user.photos[0].value,
+        subscription: "free plan"
+    });
+    return res.redirect(`https://la-ruina-tv-client.vercel.app/auth?token=${accessToken}`)
 });
-  
+
 // failure
-server.get('/auth/callback/failure' , (req , res) => {
+server.get('/auth/callback/failure', (req, res) => {
     res.send("Error");
 })
-  
+
 server.use('/', routes);
 
+
 module.exports = server
+

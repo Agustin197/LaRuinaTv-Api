@@ -35,12 +35,72 @@ router.get('/verify-email/:token', (req, res) => {
   try {
     const response = verifyEmail(token)
     if(response){
-      return res.status(200).redirect(`http://localhost:3000/verify?message=verified`);
+      return res.status(200).redirect(`https://la-ruina-tv-client.vercel.app/mercadopago/plan/verify?message=verified`);
     }
   } catch (error) {
     console.log(error)
-    return res.status(400).redirect('http://localhost:3000/verify?message=notverified');
+    return res.status(400).redirect('https://la-ruina-tv-client.vercel.app/mercadopago/plan/verify?message=notverified');
   }
 });
+
+
+router.delete("/delete-account/:id", (req, res) => {
+
+  const id = req.params.id;
+  const email = req.body.email;
+  const password = req.body.password;
+
+  Users.findOne({
+      where: {
+          id: id,
+          email: email,
+          password: password
+      }
+  })
+      .then(account => {
+          if (!account) {
+              return res.status(401).json({ msg: "No autorizado" });
+          }
+          account
+          .destroy()
+                .then(() => res.json({ msg: "Cuenta eliminada con éxito" }))
+                .catch(() => res.status(500).json({ msg: "Error del Servidor" }));
+        })
+});
+
+
+
+
+
+
+exports.default = router
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------Playlists---------------- */
+router.post('/playlists/create', (req,res) =>{
+  const {plalistName} = req.body
+  console.log(req.body)
+  res.status(200)
+})
+
+router.post('/playlists/add', (req,res) =>{
+  const {playlistId, itemId, playlistName} = req.body
+  console.log(req.body)
+  res.status(200)
+})
 
 module.exports = router

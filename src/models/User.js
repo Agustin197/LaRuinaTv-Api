@@ -37,6 +37,14 @@ const User = sequelize.define('user', {
     role:{
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    googlePic:{
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    subscription: {
+      type: DataTypes.STRING,
+      allowNull: true,
     }
 });
 
