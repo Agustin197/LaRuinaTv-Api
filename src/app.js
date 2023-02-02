@@ -191,7 +191,8 @@ server.get('/auth/google/callback',
 
 // Success 
 server.get('/auth/callback/success', async (req, res) => {
-    const url = req.headers.origin
+    const url = 'https://tv.laruinarecords.cl'
+    console.log('LA URL: ', url)
     if (!req.user) {
         res.redirect('/auth/callback/failure');
     }
