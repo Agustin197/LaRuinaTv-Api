@@ -65,11 +65,12 @@ router.get("/google/callback",
       session: true,
   }),
   (req, res) => {
+    const url = req.headers.origin
     passport.serializeUser((user, done) => {
         done(null, JSON.parse(JSON.stringify(user)));
     });
     req.session.isLoggedIn = true;
-    return res.redirect("http://localhost:3000/something");
+    return res.redirect(`http://localhost:3000/something`);
   }
 );
 

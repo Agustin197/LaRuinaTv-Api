@@ -149,8 +149,7 @@ server.use((req, res, next)=>{
         'http://localhost:3002',
         'https://laruinarecords.cl',
         'https://tv.laruinarecords.cl',
-        'https://la-ruina-tv-client.vercel.app/',
-        'undefined'
+        'https://la-ruina-tv-client.vercel.app'
     ];
     if(corsList.includes(req.headers.origin)){   
         res.header('Access-Control-Allow-Origin', (req.headers.origin));
@@ -192,6 +191,7 @@ server.get('/auth/google/callback',
 
 // Success 
 server.get('/auth/callback/success', async (req, res) => {
+    const url = req.headers.origin
     if (!req.user) {
         res.redirect('/auth/callback/failure');
     }
@@ -207,7 +207,7 @@ server.get('/auth/callback/success', async (req, res) => {
             { token: req.user.accessToken },
             { where: { email: req.user.emails[0].value, } }
         )
-        return res.redirect(`https://la-ruina-tv-client.vercel.app/auth?token=${accessToken}`)
+        return res.redirect(`${url}/auth?token=${accessToken}`)
     }
     await User.create({
         alias: req.user.name.givenName,
@@ -220,7 +220,7 @@ server.get('/auth/callback/success', async (req, res) => {
         googlePic: req.user.photos[0].value,
         subscription: "free plan"
     });
-    return res.redirect(`https://la-ruina-tv-client.vercel.app/auth?token=${accessToken}`)
+    return res.redirect(`${url}/auth?token=${accessToken}`)
 });
 
 // failure
