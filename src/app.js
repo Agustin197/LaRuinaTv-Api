@@ -142,14 +142,15 @@ server.use(passport.initialize());
 server.use(passport.session());
 
 server.use((req, res, next)=>{
-    console.log('request from: ', req.headers.origin)
+    console.log('request from: ', req.headers)
     const corsList = [
         'http://localhost:3000',
         'http://localhost:3001',
         'http://localhost:3002',
         'https://laruinarecords.cl',
         'https://tv.laruinarecords.cl',
-        'https://la-ruina-tv-client.vercel.app'
+        'https://la-ruina-tv-client.vercel.app',
+        undefined
     ];
     if(corsList.includes(req.headers.origin)){   
         res.header('Access-Control-Allow-Origin', (req.headers.origin));
@@ -191,7 +192,9 @@ server.get('/auth/google/callback',
 
 // Success 
 server.get('/auth/callback/success', async (req, res) => {
-    const url = 'https://tv.laruinarecords.cl'
+    // const url = 'https://tv.laruinarecords.cl'
+    const url = 'http://localhost:3000'
+
     console.log('LA URL: ', url)
     if (!req.user) {
         res.redirect('/auth/callback/failure');
