@@ -9,6 +9,7 @@ const {
   listPostImages,
 } = require("../controllers/media.js");
 
+
 //------ GET ALL IMAGES(SLIDERS & VISOR) -------
 
 router.get("/getall", async (req, res) => {
