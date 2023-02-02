@@ -17,7 +17,7 @@ const User = sequelize.define('user', {
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     isVerified: {
       type: DataTypes.BOOLEAN,
@@ -26,6 +26,25 @@ const User = sequelize.define('user', {
     token: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    method: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    googleId: {
+      type: DataTypes.STRING
+    },
+    role:{
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    googlePic:{
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    subscription: {
+      type: DataTypes.STRING,
+      allowNull: true,
     }
 });
 
