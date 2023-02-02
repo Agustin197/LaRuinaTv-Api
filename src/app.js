@@ -1,113 +1,3 @@
-// require("dotenv").config();
-// const morgan = require('morgan');
-// const cors = require('cors')
-// const express = require('express');
-// const server = express();
-// const routes = require('./routes/index.js');
-// const passport = require('passport');
-// const cookieSession = require('cookie-session');
-// require('./passport');
-
-// server.use(cookieSession({
-//     name: 'google-auth-session',
-//     keys: ['key1', 'key2'],
-//     debug: true
-// }));
-
-// server.use(function(request, response, next) {
-//     if (request.session && !request.session.regenerate) {
-//         request.session.regenerate = (cb) => {
-//             cb()
-//         }
-//     }
-//     if (request.session && !request.session.save) {
-//         request.session.save = (cb) => {
-//             cb()
-//         }
-//     }
-//     next()
-// })
-// server.use((req, res, next) => {
-//     console.log('la sessionnnnnnnn ',req.session);
-//     next();
-// });
-
-// const corsOptions ={
-//     origin:'http://localhost:3000', 
-//     credentials:true,          
-//     optionSuccessStatus:200
-// }
-// server.use(cors(corsOptions));
-
-// server.use(express.json())
-
-// server.use(express.urlencoded({extended: true}));
-
-// server.use(passport.initialize());
-// server.use(passport.session());
-// // server.use((req, res, next)=>{
-// //     console.log('request from: ', req.headers.origin)
-// //     const corsList = [
-// //         'http://localhost:3000',
-// //         'http://localhost:3001',
-// //         'http://localhost:3002',
-// //         'https://laruinarecords.cl',
-// //         'https://tv.laruinarecords.cl',
-// //         'undefined'
-// //     ];
-// //     if(corsList.includes(req.headers.origin)){   
-// //         res.header('Access-Control-Allow-Origin', (req.headers.origin));
-// //         res.header('Access-Control-Allow-Credentials', 'true');
-// //         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested, Content-Type, Accept');
-// //         res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-// //         next();
-// //         }
-// //     if(req.headers['user-agent'].includes('insomnia')) {
-// //         res.header('Access-Control-Allow-Origin', '*');
-// //         res.header('Access-Control-Allow-Credentials', 'true');
-// //         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested, Content-Type, Accept');
-// //         res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-// //         next();
-// //     } //testing ruteos
-// // });
-// // server.use(cors({ origin: 'http://localhost:3000' }));
-// // const corsOptions ={
-// //     origin:`http://localhost:3000`, 
-// //     credentials:true,            //access-control-allow-credentials:true
-// //     optionSuccessStatus:200
-// // }
-// // server.use(cors(corsOptions));
-// // server.use(function(req, res, next) {
-// //     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-// //     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-// //     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-// //     next();
-// // });
-// //server.use(passport.session());
-
-// // server.use(
-// //     cors({
-// //         origin: "http://localhost:3000",
-// //         methods: 'GET, POST, OPTIONS, PUT, DELETE',
-// //         credentials: true
-// //     })
-// // ) SOLO TESTEO
-// // server.use(cookieParser());
-
-
-
-// server.use(morgan('dev'));
-
-
-
-
-
-
-
-
-
-
-
 require("dotenv").config();
 const morgan = require('morgan');
 const cors = require('cors')
@@ -142,7 +32,8 @@ server.use(passport.initialize());
 server.use(passport.session());
 
 server.use((req, res, next)=>{
-    console.log('request from: ', req.headers)
+    const HOST_URL = req.headers.referer.slice(0, -1)
+    console.log('request from: ', HOST_URL)
     const corsList = [
         'http://localhost:3000',
         'http://localhost:3001',
@@ -150,10 +41,10 @@ server.use((req, res, next)=>{
         'https://laruinarecords.cl',
         'https://tv.laruinarecords.cl',
         'https://la-ruina-tv-client.vercel.app',
-        undefined
+        'https://accounts.google.com'
     ];
-    if(corsList.includes(req.headers.origin)){   
-        res.header('Access-Control-Allow-Origin', (req.headers.origin));
+    if(corsList.includes(HOST_URL)){   
+        res.header('Access-Control-Allow-Origin', (HOST_URL));
         res.header('Access-Control-Allow-Credentials', 'true');
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested, Content-Type, Accept');
         res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
@@ -167,13 +58,6 @@ server.use((req, res, next)=>{
         next();
     } //testing ruteos
 });
-
-
-// const corsOptions = {
-//     origin: ['https://la-ruina-tv-client.vercel.app'],
-//     credentials: true
-// }
-// server.use(cors(corsOptions));
 
 server.use(express.json())
 server.use(express.urlencoded({ extended: true }));
@@ -192,12 +76,12 @@ server.get('/auth/google/callback',
 
 // Success 
 server.get('/auth/callback/success', async (req, res) => {
-    // const url = 'https://tv.laruinarecords.cl'
-    const url = 'http://localhost:3000'
+    const url = 'https://tv.laruinarecords.cl'
+    // const url = 'http://localhost:3000'
 
-    console.log('LA URL: ', url)
+    console.log('LA URL: ', req.headers)
     if (!req.user) {
-        res.redirect('/auth/callback/failure');
+        res.redirect(`${url}/auth/callback/failure`);
     }
     const accessToken = req.user.accessToken;
     const existingUser = await User.findOne({

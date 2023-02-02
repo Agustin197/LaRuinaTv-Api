@@ -65,7 +65,6 @@ router.get("/google/callback",
       session: true,
   }),
   (req, res) => {
-    const url = req.headers.origin
     passport.serializeUser((user, done) => {
         done(null, JSON.parse(JSON.stringify(user)));
     });
