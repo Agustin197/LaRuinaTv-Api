@@ -13,7 +13,7 @@ const oauth2Client = new google.auth.OAuth2(
 );
 
 oauth2Client.setCredentials({
-  refresh_token: '1//04gytFg2wV3b7CgYIARAAGAQSNwF-L9IrHOzjV2-qFw8AA0-u6T8Y4fzDeg658EdDQ32p0q7953mh7uQziL0rHC4IA69AeqvfTZA'
+  refresh_token: REFRESH_TOKEN
 });
 
 const drive = google.drive({
