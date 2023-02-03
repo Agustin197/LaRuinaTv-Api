@@ -74,38 +74,39 @@ router.get("/google/callback",
 );
 
 passport.use(
-    "google",
-    new GoogleStrategy(
-      {
-        clientID: '874900879874-6fa06c807bf57v30mp7o376a5rs9tmg5.apps.googleusercontent.com',
-        clientSecret: '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',
-        callbackURL: `https://la-ruina-api.fly.dev/auth/google/callback`,
-      },
-      async function (accessToken, refreshToken, profile, done) {
-        //const response = emails.includes(profile.emails[0].value);
-        // IF EXITS IN DATABASE
-        const response = await User.findOne({ where: { email: profile.emails[0].value } });
-        if (response) {
-            console.log('already exists')
-          done(null, profile);
-        } else {
-          // SAVE IN DATABASE
-         await User.create({
-            alias: profile.displayName,
-            email: profile.emails[0].value,
-            isVerified: false,
-            role: 'free',
-            method: 'google',
-            googleId: profile.id,
-            token: profile.accessToken
-          });
-          console.log('created')
-          done(null, profile);
-          
-        }
+  "google",
+  new GoogleStrategy(
+    {
+      clientID: '874900879874-6fa06c807bf57v30mp7o376a5rs9tmg5.apps.googleusercontent.com',
+      clientSecret: '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',
+      callbackURL: `https://la-ruina-api.fly.dev/auth/google/callback`,
+    },
+    async function (accessToken, refreshToken, profile, done) {
+      //const response = emails.includes(profile.emails[0].value);
+      // IF EXITS IN DATABASE
+      const response = await User.findOne({ where: { email: profile.emails[0].value } });
+      if (response) {
+          console.log('already exists')
+        done(null, profile);
+      } else {
+        // SAVE IN DATABASE
+       await User.create({
+          alias: profile.displayName,
+          email: profile.emails[0].value,
+          isVerified: false,
+          role: 'free',
+          method: 'google',
+          googleId: profile.id,
+          token: profile.accessToken
+        });
+        console.log('created')
+        done(null, profile);
+        
       }
-    )
-  );
+    }
+  )
+);
+
 
 
 

@@ -76,12 +76,11 @@ server.get('/auth/google/callback',
 
 // Success 
 server.get('/auth/callback/success', async (req, res) => {
-    const url = 'https://tv.laruinarecords.cl'
-    // const url = 'http://localhost:3000'
+    const referer = 'https://tv.laruinarecords.cl';
 
-    console.log('LA URL: ', req.headers)
+    console.log('LA URL: ', req.query)
     if (!req.user) {
-        res.redirect(`${url}/auth/callback/failure`);
+        res.redirect(`${referer}/auth/callback/failure`);
     }
     const accessToken = req.user.accessToken;
     const existingUser = await User.findOne({
@@ -95,7 +94,7 @@ server.get('/auth/callback/success', async (req, res) => {
             { token: req.user.accessToken },
             { where: { email: req.user.emails[0].value, } }
         )
-        return res.redirect(`${url}/auth?token=${accessToken}`)
+        return res.redirect(`${referer}/auth?token=${accessToken}`)
     }
     await User.create({
         alias: req.user.name.givenName,
@@ -108,8 +107,9 @@ server.get('/auth/callback/success', async (req, res) => {
         googlePic: req.user.photos[0].value,
         subscription: "free plan"
     });
-    return res.redirect(`${url}/auth?token=${accessToken}`)
+    return res.redirect(`${referer}/auth?token=${accessToken}`)
 });
+
 
 // failure
 server.get('/auth/callback/failure', (req, res) => {
