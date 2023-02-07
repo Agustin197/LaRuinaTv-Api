@@ -40,6 +40,7 @@ server.use((req, res, next)=>{
         'http://localhost:3002',
         'https://laruinarecords.cl',
         'https://tv.laruinarecords.cl',
+        'https://merch.laruinarecords.cl',
         'https://la-ruina-tv-client.vercel.app',
         'https://accounts.google.com'
     ];
@@ -72,7 +73,8 @@ server.get('/auth/google/callback',
     passport.authenticate('google', {
         successRedirect: '/auth/callback/success',
         failureRedirect: '/auth/callback/failure'
-    }));
+    })
+);
 
 // Success 
 server.get('/auth/callback/success', async (req, res) => {

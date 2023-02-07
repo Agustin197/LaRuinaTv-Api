@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { createUser, loginUser, verifyEmail, loginUserWithGoogle } = require("../controllers/users.js");
 
-
 router.post("/signup", async (req, res) => {
   try {
     const response = await createUser(req, res);
@@ -11,6 +10,7 @@ router.post("/signup", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
 //♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♫ ♫ ♫ ♫ ♫ ♫ ♫ ♫
 router.post("/login", async (req, res) => {
   try {
