@@ -68,16 +68,29 @@ server.get('/auth', passport.authenticate('google', {
         ['email', 'profile', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/plus.me'], accessType: 'offline'
 }));
 
-// Auth Callback
-server.get('/auth/google/callback',
+const successRedirect = (referer) => {
+    return `/auth/callback/${referer}success`;
+};
+
+const failureRedirect = '/auth/callback/failure';
+
+server.get('/auth/google/callback', (req, res, next) => {
     passport.authenticate('google', {
-        successRedirect: '/auth/callback/success',
-        failureRedirect: '/auth/callback/failure'
-    })
-);
+        successRedirect: successRedirect(req.headers.referer),
+        failureRedirect: failureRedirect
+    })(req, res, next);
+});
+
+// Auth Callback
+// server.get('/auth/google/callback',
+//     passport.authenticate('google', {
+//         successRedirect: `/auth/callback/${req.headers.referer}success`,
+//         failureRedirect: '/auth/callback/failure'
+//     })
+// );
 
 // Success 
-server.get('/auth/callback/success', async (req, res) => {
+server.get('/auth/callback/laruinatv/success', async (req, res) => {
     const referer = 'https://tv.laruinarecords.cl';
 
     console.log('LA URL: ', req.query)
