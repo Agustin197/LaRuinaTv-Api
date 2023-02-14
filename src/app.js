@@ -90,7 +90,7 @@ server.get('/auth', passport.authenticate('google', {
 // Auth Callback
 server.get('/auth/laruina/tv/google/callback',
     passport.authenticate('google', {
-        successRedirect: `/auth/laruinatv/callback/success`,
+        successRedirect: `/auth/laruina/tv/callback/success`,
         failureRedirect: '/auth/callback/failure'
     })
 );
