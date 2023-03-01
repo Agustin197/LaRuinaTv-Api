@@ -1,15 +1,13 @@
-# fly.toml file generated for la-ruina-api on 2023-01-08T05:47:34-03:00
+# fly.toml file generated for terminalkiller on 2023-02-27T10:19:07-03:00
 
-app = "la-ruina-api"
+app = "terminalkiller"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
 
 [env]
-  PORT = "8080"
 
 [experimental]
-  allowed_public_ports = []
   auto_rollback = true
 
 [[services]]

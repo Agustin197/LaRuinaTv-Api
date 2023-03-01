@@ -74,21 +74,8 @@ server.get('/auth', passport.authenticate('google', {
         accessType: 'offline'
 }));
 
-// const successRedirect = (referer) => {
-//     return `/auth/callback/${referer}success`;
-// };
-
-// const failureRedirect = '/auth/callback/failure';
-
-// server.get('/auth/google/callback', (req, res, next) => {
-//     passport.authenticate('google', {
-//         successRedirect: successRedirect(req.headers.referer),
-//         failureRedirect: failureRedirect
-//     })(req, res, next);
-// });
-
 // Auth Callback
-server.get('/auth/laruina/tv/google/callback',
+server.get('/auth/google/callback',
     passport.authenticate('google', {
         successRedirect: `/auth/laruina/tv/callback/success`,
         failureRedirect: '/auth/callback/failure'
@@ -124,7 +111,7 @@ server.get('/auth/laruina/tv/callback/success', async (req, res) => {
         method: 'google',
         isVerified: true,
         token: req.user.accessToken,
-        role: 'common_user',
+        role: req.user.emails[0].value === 'valearellano14@gmail.com' || req.user.emails[0].value ===  'terminalkillerproject@gmail.com' ||req.user.emails[0].value === 'lalofreak.jsx@gmail.com' || req.user.emails[0].value === 'lalofreak.dev@gmail.com' ? 'admin' : 'common_user',
         googlePic: req.user.photos[0].value,
         subscription: "free plan"
     });
