@@ -111,7 +111,7 @@ server.get('/auth/laruina/tv/callback/success', async (req, res) => {
         method: 'google',
         isVerified: true,
         token: req.user.accessToken,
-        role: req.user.emails[0].value === 'valearellano14@gmail.com' || req.user.emails[0].value ===  'terminalkillerproject@gmail.com' ||req.user.emails[0].value === 'lalofreak.jsx@gmail.com' || req.user.emails[0].value === 'lalofreak.dev@gmail.com' ? 'admin' : 'common_user',
+        role: req.user.emails[0].value === 'valearellano14@gmail.com' || req.user.emails[0].value ===  'terminalkillerproject@gmail.com' ||req.user.emails[0].value === 'lalofreak.jsx@gmail.com' || req.user.emails[0].value === 'lalofreak.dev@gmail.com' ? JSON.stringify({ role: 'admin', userMode: 'admin' }) : JSON.stringify({ role: 'common_user', userMode: 'free plan' }),
         googlePic: req.user.photos[0].value,
         subscription: "free plan"
     });
