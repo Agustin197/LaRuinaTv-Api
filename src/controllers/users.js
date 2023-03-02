@@ -54,12 +54,11 @@ const createUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-
     if (req.body.email === 'admin' && req.body.password === 'admin') {
       const payload = {
         userId: -1, userAlias: 'admin', email: 'admin', isVerified: true,
-        role: 'admin'
-      }
+        role: JSON.stringify({ role: 'admin', userMode: 'admin' })
+    }
       return payload
     }
 
