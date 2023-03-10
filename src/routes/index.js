@@ -7,6 +7,7 @@ const product = require('./product');
 const mercadopago = require("./mercadopago")
 const playlist = require("./playlist")
 const likes = require("./likes")
+const yt = require('./yt')
 
 router.use('/user', user);
 router.use('/users', users);
@@ -15,7 +16,7 @@ router.use("/media", media);
 router.use("/product", product)
 router.use("/mercadopago", mercadopago)
 router.use("/playlist", playlist)
-//
+router.use('/yt', yt)
 router.use("/likes", likes)
 
 module.exports =  router

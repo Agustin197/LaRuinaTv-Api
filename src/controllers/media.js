@@ -4,7 +4,6 @@ const os = require('os');
 const { POST_CLIENT_ID, POST_CLIENT_SECRET, REDIRECT_URI, REFRESH_TOKEN, VISOR_FOLDER, SLIDER_FOLDER } =
   process.env;
 const path = require("path");
-const express = require('express');
 
 const oauth2Client = new google.auth.OAuth2(
   '874900879874-5hn8fcdnj01vckdokqr9a6b6fgvo8mkh.apps.googleusercontent.com',
@@ -12,9 +11,23 @@ const oauth2Client = new google.auth.OAuth2(
   'https://developers.google.com/oauthplayground'
 );
 
-oauth2Client.setCredentials({
-  refresh_token: REFRESH_TOKEN
-});
+oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN});
+
+async function refreshAccessToken() {
+  try {
+      const token = await oauth2Client.refreshAccessToken();
+      console.log(token)
+      oauth2Client.setCredentials({refresh_token: token.credentials.refresh_token});
+      return token.credentials.refresh_token
+  } catch (error) {
+      console.error('Error al actualizar los tokens:', error);
+  }
+}
+
+setInterval(() => {
+  refreshAccessToken();
+}, 5000 * 60);
+// 20 * 60000
 
 const drive = google.drive({
   version: "v3",
@@ -247,20 +260,6 @@ async function uploadFile(result, mappingImages, mappingFiles) {
   }
 }
 
-// async function listHolis() {
-//   try {
-//     const response = await drive.files.list({
-//       fileId: "1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe", //sliders
-//       q: `'1AHVpvZukrnEgJzwdCjDDnpUxuDob8Lbe' in parents`,
-//       fields: 'files(id, name, properties)',
-//     });
-//     return response.data.files
-//   }catch(e){
-//     console.log(e)
-//   }
-// }
-
-
 
 //--------List Posts Slider Images----------
 function imgLinks(id) {
@@ -284,24 +283,22 @@ async function createForGenerateUrl(e, index) {
   const linkimg = imgLinks(e.id)
   const prop = e.appProperties
   const { id, idLinkSPOTY, idLinkDRIVE, urlLinkWEB, urlLinkDOWNLOAD, categories, info, connectionId, title, genre, artist, idMedia, idLinkYT, mediaType } = prop
-  return { id, linkimg, idLinkSPOTY, idLinkDRIVE, urlLinkWEB, urlLinkDOWNLOAD, categories, info, connectionId, title, genre, artist, idMedia, idLinkYT, mediaType }
-  // console.log('MEIDAID',idMedia)
-  // return {
-  //   id: index,
-  //   idMedia: {idLinkYT, idLinkSPOTY, idLinkDRIVE, urlLinkWEB, urlLinkDOWNLOAD},
-  //   mediaType,
-  //   title, 
-  //   artist,
-  //   tag: [''],//falta
-  //   sliderImage: linkimg[index], 
-  //   visorImage: linkimg[index], //falta
-  //   icon: [''], //falta
-  //   categories,
-  //   info,
-  //   actionButton: [''], //falta
-  //   genre,
-  //   connectionId
-  //}
+  return { 
+    id, 
+    linkimg, 
+    idLinkSPOTY, 
+    idLinkDRIVE, 
+    urlLinkWEB, 
+    urlLinkDOWNLOAD, 
+    categories, 
+    info, 
+    connectionId, 
+    title, 
+    genre, 
+    artist, 
+    idMedia, 
+    idLinkYT, 
+    mediaType }
 }
 
 async function listPostImages() {

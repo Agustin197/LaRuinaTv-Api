@@ -56,7 +56,7 @@ async function checkSubscriptionStatus(userId, preapprovalId) {
     if (error) throw new Error(error);
     console.log('EL STATUS: ', body.status)
     if (body.status.toString() === 'authorized') {
-      const subscript = "Plan Subscriptor";
+      const subscript = "subscriber";
       const result = await updateUserPlan(subscript, userId);
       console.log(result)
       return result

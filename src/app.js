@@ -32,32 +32,32 @@ server.use(passport.initialize());
 server.use(passport.session());
 
 server.use((req, res, next)=>{
-    const HOST_URL = req.headers.referer.slice(0, -1)
-    console.log('request from: ', HOST_URL)
-    const corsList = [
-        'http://localhost:3000',
-        'http://localhost:3001',
-        'http://localhost:3002',
-        'https://laruinarecords.cl',
-        'https://tv.laruinarecords.cl',
-        'https://merch.laruinarecords.cl',
-        'https://la-ruina-tv-client.vercel.app',
-        'https://accounts.google.com'
-    ];
-    if(corsList.includes(HOST_URL)){   
-        res.header('Access-Control-Allow-Origin', (HOST_URL));
-        res.header('Access-Control-Allow-Credentials', 'true');
-        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested, Content-Type, Accept');
-        res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-        next();
-        }
-    if(req.headers['user-agent'].includes('insomnia')) {
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Credentials', 'true');
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested, Content-Type, Accept');
         res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
         next();
-    } //testing ruteos
+    //testing ruteos
+    //const HOST_URL = req.headers.referer.slice(0, -1)
+    //console.log('request from: ', HOST_URL)
+//     const corsList = [
+//         'http://localhost:3000',
+//         'http://localhost:3001',
+//         'http://localhost:3002',
+//         'https://laruinarecords.cl',
+//         'https://tv.laruinarecords.cl',
+//         'https://merch.laruinarecords.cl',
+//         'https://la-ruina-tv-client.vercel.app',
+//         'https://accounts.google.com',
+//         'http://192.168.0.8:3000'
+//     ];
+//     if(corsList.includes(HOST_URL)){   
+//         res.header('Access-Control-Allow-Origin', (HOST_URL));
+//         res.header('Access-Control-Allow-Credentials', 'true');
+//         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested, Content-Type, Accept');
+//         res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+//         next();
+//         }
 });
 
 server.use(express.json())
@@ -111,9 +111,8 @@ server.get('/auth/laruina/tv/callback/success', async (req, res) => {
         method: 'google',
         isVerified: true,
         token: req.user.accessToken,
-        role: req.user.emails[0].value === 'valearellano14@gmail.com' || req.user.emails[0].value ===  'terminalkillerproject@gmail.com' ||req.user.emails[0].value === 'lalofreak.jsx@gmail.com' || req.user.emails[0].value === 'lalofreak.dev@gmail.com' ? JSON.stringify({ role: 'admin', userMode: 'admin' }) : JSON.stringify({ role: 'common_user', userMode: 'free plan' }),
+        role: req.user.emails[0].value === 'valearellano14@gmail.com' || req.user.emails[0].value ===  'terminalkillerproject@gmail.com' ||req.user.emails[0].value === 'lalofreak.jsx@gmail.com' || req.user.emails[0].value === 'lalofreak.dev@gmail.com' ? JSON.stringify({ role: 'admin', userMode: 'admin' }) : JSON.stringify({ role: 'common_user', userMode: 'free' }),
         googlePic: req.user.photos[0].value,
-        subscription: "free plan"
     });
     return res.redirect(`${referer}/auth?token=${accessToken}`)
 });

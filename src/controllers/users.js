@@ -158,13 +158,13 @@ async function updateUserPlan(newSub, userId) {
 async function getUserPlan (userId) {
   const existingUser = await User.findOne({ 
     where: { id: userId },
-    attributes: ['subscription']
+    attributes: ['role']
   });
   console.log('el suppuesto sub: ', existingUser)
-  if(existingUser.subscription === "Plan Subscriptor"){
-    return 'Plan Subscriptor'
+  if(existingUser.role === JSON.stringify({ role: 'common_user', userMode: 'subscriber' })){
+    return 'subscriber'
   }else{
-    return "free plan"
+    return "free"
   }
 }
 
