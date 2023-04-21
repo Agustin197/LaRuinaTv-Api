@@ -107,30 +107,6 @@ const uploadImageTemp = async (req, res) => {
 
   const bb = busboy({ headers: req.headers });
 
-  // bb.on("file", (name, file, info) => {
-  //   const { filename, encoding, mimeType } = info;
-  //   console.log(
-  //     `File [${name}]: filename: %j, encoding: %j, mimeType: %j`,
-  //     filename,
-  //     encoding,
-  //     mimeType
-  //   );
-  //   if(name === 'imageSlider'){
-  //     console.log('image slider: ', filename)
-  //     mapping.set('imageSlider', filename)
-  //     const saveTo = path.join(os.tmpdir(), `slider-image-${filename}`);
-  //     file.pipe(fs.createWriteStream(saveTo));
-  //   }else if(name === 'imageVisor'){
-  //     console.log('image visor: ', filename)
-  //     if(filename === null){
-  //       mapping.set('imageVisor', null)
-  //       return
-  //     }
-  //     mapping.set('imageVisor', filename)
-  //     const saveTo = path.join(os.tmpdir(), `visor-image-${filename}`);
-  //     file.pipe(fs.createWriteStream(saveTo));
-  //   }
-  // });
   bb.on("file", (fieldName, file, info) => {
     if (file) {
       if (fieldName === "imageSlider") {
