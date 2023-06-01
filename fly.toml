@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for laruina-tv on 2023-06-01T02:57:45-04:00
+# fly.toml app configuration file generated for terminalkiller on 2023-06-01T03:24:43-04:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "laruina-tv"
+app = "terminalkiller"
 primary_region = "scl"
 
 [env]
